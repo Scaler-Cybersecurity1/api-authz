@@ -8,1038 +8,708 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  :root{
+    --bg:#0a0c14;
+    --bg-2:#0f1220;
+    --bg-subtle:#0d1018;
+    --bg-muted:rgba(255,255,255,0.045);
+    --bg-card:rgba(255,255,255,0.028);
+    --bg-card-2:rgba(255,255,255,0.045);
+    --bg-input:#0a0d16;
+    --border:rgba(255,255,255,0.08);
+    --border-strong:rgba(255,255,255,0.16);
+    --text:#e6e8ef;
+    --text-2:rgba(230,232,239,0.62);
+    --text-3:rgba(230,232,239,0.38);
+    --indigo:#818cf8;
+    --indigo-50:rgba(129,140,248,0.14);
+    --purple:#c084fc;
+    --purple-50:rgba(192,132,252,0.14);
+    --navy:#60a5fa;
+    --navy-50:rgba(96,165,250,0.14);
+    --amber:#fbbf24;
+    --amber-50:rgba(251,191,36,0.14);
+    --emerald:#34d399;
+    --emerald-50:rgba(52,211,153,0.14);
+    --red:#f87171;
+    --yellow:#facc15;
+    --shadow-sm:0 1px 2px rgba(0,0,0,0.35);
+    --shadow-md:0 4px 14px rgba(0,0,0,0.35);
+    --shadow-lg:0 18px 48px -14px rgba(0,0,0,0.65), 0 8px 20px -6px rgba(0,0,0,0.35);
+  }
   *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: #0b0d12;
-    color: #e6e8ef;
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
+  html, body { margin:0; padding:0; }
+  body{
+    font-family:'Inter', system-ui, -apple-system, sans-serif;
+    background:var(--bg);
+    background-image:
+      radial-gradient(ellipse 900px 550px at 15% -5%, rgba(99,102,241,0.10), transparent 60%),
+      radial-gradient(ellipse 800px 500px at 100% 110%, rgba(124,58,237,0.09), transparent 60%),
+      radial-gradient(ellipse 700px 400px at 50% 50%, rgba(16,185,129,0.04), transparent 60%);
+    background-attachment:fixed;
+    color:var(--text);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    font-size:14px;
   }
-  a { color: inherit; text-decoration: none; }
-  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
-  input, textarea, select { font-family: inherit; }
-  code, pre, .mono { font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; }
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; }
+  input, textarea, select{ font-family:inherit; }
+  code, pre, .mono{ font-family:'JetBrains Mono', ui-monospace, Menlo, monospace; }
+  h1,h2,h3,h4{ margin:0; color:var(--text); }
+  ::selection{ background:rgba(129,140,248,0.35); color:#fff; }
 
-  /* ---------- GLOBAL NAV ---------- */
-  .topnav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    height: 60px;
-    padding: 0 28px;
-    background: rgba(10, 12, 17, 0.85);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  ::-webkit-scrollbar{ width:10px; height:10px; }
+  ::-webkit-scrollbar-track{ background:transparent; }
+  ::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.1); border-radius:10px; border:2px solid transparent; background-clip:padding-box; }
+  ::-webkit-scrollbar-thumb:hover{ background:rgba(255,255,255,0.22); background-clip:padding-box; }
+
+  /* ================= TOP NAV ================= */
+  .topnav{
+    position:sticky; top:0; z-index:100; height:60px; padding:0 26px;
+    background:rgba(10,12,20,0.75);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
   }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 15px;
-    letter-spacing: 0.2px;
+  .brand{ display:flex; align-items:center; gap:12px; font-size:15px; letter-spacing:0.2px; }
+  .brand-left{ font-weight:700; color:#fff; }
+  .brand-sep{ color:rgba(255,255,255,0.22); font-weight:300; }
+  .brand-right{ color:rgba(255,255,255,0.6); font-weight:400; }
+  .status-pill{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:6px 14px 6px 10px;
+    background:rgba(16,185,129,0.10);
+    border:1px solid rgba(16,185,129,0.28);
+    color:#4ade80;
+    border-radius:999px;
+    font-size:12.5px; font-weight:500;
   }
-  .brand-left { font-weight: 700; color: #fff; }
-  .brand-sep { color: rgba(255,255,255,0.25); font-weight: 300; }
-  .brand-right { color: rgba(255,255,255,0.65); font-weight: 400; }
-  .status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 14px 6px 10px;
-    background: rgba(34, 197, 94, 0.10);
-    border: 1px solid rgba(34, 197, 94, 0.28);
-    color: #4ade80;
-    border-radius: 999px;
-    font-size: 12.5px;
-    font-weight: 500;
+  .pulse-dot{
+    width:8px; height:8px; border-radius:50%; background:#22c55e;
+    box-shadow:0 0 0 0 rgba(34,197,94,0.7);
+    animation:pulse 1.8s infinite;
   }
-  .pulse-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #22c55e;
-    box-shadow: 0 0 0 0 rgba(34,197,94, 0.7);
-    animation: pulse 1.8s infinite;
-  }
-  @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(34,197,94, 0.7); }
-    70% { box-shadow: 0 0 0 10px rgba(34,197,94, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(34,197,94, 0); }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(34,197,94,0.7); }
+    70%{ box-shadow:0 0 0 10px rgba(34,197,94,0); }
+    100%{ box-shadow:0 0 0 0 rgba(34,197,94,0); }
   }
 
-  /* ---------- BREADCRUMB ---------- */
-  .breadcrumb-bar {
-    padding: 14px 28px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: rgba(255,255,255,0.55);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+  /* ================= BREADCRUMB ================= */
+  .crumbs{
+    padding:13px 26px; display:flex; align-items:center; gap:10px;
+    font-size:13px; color:rgba(255,255,255,0.55);
+    background:rgba(0,0,0,0.2); border-bottom:1px solid var(--border);
   }
-  .back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 7px;
-    font-size: 12.5px;
-    color: rgba(255,255,255,0.8);
-    transition: all 0.15s;
+  .back-btn{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:6px 12px; border:1px solid var(--border); border-radius:7px;
+    font-size:12.5px; color:rgba(255,255,255,0.8);
+    background:rgba(255,255,255,0.03); transition:all 0.15s;
   }
-  .back-btn:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.25); }
-  .crumb-sep { color: rgba(255,255,255,0.3); }
-  .crumb-current { color: #fff; font-weight: 500; }
+  .back-btn:hover{ background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.22); color:#fff; }
+  .crumb-sep{ color:rgba(255,255,255,0.25); }
+  .crumb-current{ color:#fff; font-weight:500; }
 
-  /* ---------- HOME ---------- */
-  .home-wrap {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 64px 28px 80px;
+  /* ================= HOME ================= */
+  .home-wrap{ max-width:1160px; margin:0 auto; padding:64px 26px 80px; position:relative; }
+  .home-eyebrow{
+    font-size:12px; letter-spacing:2.8px; text-transform:uppercase;
+    color:#a78bfa; font-weight:600; margin-bottom:14px;
+    display:inline-flex; align-items:center; gap:8px;
   }
-  .home-eyebrow {
-    font-size: 12px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #8b5cf6;
-    font-weight: 600;
-    margin-bottom: 14px;
+  .home-eyebrow::before{
+    content:''; width:18px; height:1px;
+    background:linear-gradient(90deg, transparent, #a78bfa);
   }
-  .home-title {
-    font-size: 44px;
-    font-weight: 800;
-    letter-spacing: -1px;
-    color: #fff;
-    margin: 0 0 14px 0;
-    line-height: 1.1;
+  .home-title{
+    font-size:44px; font-weight:800; letter-spacing:-1px;
+    color:#fff; margin:0 0 16px 0; line-height:1.08;
   }
-  .home-sub {
-    font-size: 17px;
-    color: rgba(255,255,255,0.6);
-    max-width: 640px;
-    line-height: 1.55;
-    margin: 0 0 48px 0;
+  .home-title .g{
+    background:linear-gradient(90deg,#818cf8,#c084fc,#34d399);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
   }
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px;
+  .home-sub{
+    font-size:16.5px; color:rgba(255,255,255,0.6); max-width:640px;
+    line-height:1.6; margin:0 0 44px 0;
   }
-  @media (max-width: 820px) {
-    .cards-grid { grid-template-columns: 1fr; }
-    .home-title { font-size: 32px; }
+  .cards-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+  @media (max-width:820px){
+    .cards-grid{ grid-template-columns:1fr; }
+    .home-title{ font-size:32px; }
+    .home-wrap{ padding:44px 18px 60px; }
   }
-  .lab-card {
-    position: relative;
-    padding: 28px;
-    background: linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
-    border: 1px solid rgba(255,255,255,0.09);
-    border-radius: 16px;
-    cursor: pointer;
-    transition: all 0.22s cubic-bezier(.4,.0,.2,1);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    min-height: 200px;
+  .lab-card{
+    position:relative; padding:26px;
+    background:linear-gradient(160deg, rgba(255,255,255,0.045), rgba(255,255,255,0.018));
+    border:1px solid var(--border); border-radius:16px;
+    cursor:pointer;
+    transition:all 0.22s cubic-bezier(.4,0,.2,1);
+    overflow:hidden; display:flex; flex-direction:column;
+    min-height:200px;
   }
-  .lab-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(139, 92, 246, 0.35);
-    box-shadow: 0 18px 45px -12px rgba(139,92,246,0.25);
+  .lab-card::after{
+    content:''; position:absolute; inset:-1px;
+    border-radius:17px; padding:1px;
+    background:linear-gradient(130deg, transparent 40%, var(--accent,#818cf8), transparent 70%);
+    -webkit-mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+    -webkit-mask-composite:xor; mask-composite:exclude;
+    opacity:0; transition:opacity 0.25s; pointer-events:none;
   }
-  .lab-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent, #8b5cf6), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
+  .lab-card:hover{
+    transform:translateY(-3px);
+    border-color:transparent;
+    box-shadow:var(--shadow-lg);
   }
-  .lab-card:hover::before { opacity: 1; }
-  .lab-card .icon-box {
-    width: 44px;
-    height: 44px;
-    border-radius: 11px;
-    display: grid;
-    place-items: center;
-    background: var(--accent-bg, rgba(139,92,246,0.13));
-    color: var(--accent, #a78bfa);
-    margin-bottom: 18px;
+  .lab-card:hover::after{ opacity:1; }
+  .lab-card .icon-box{
+    width:44px; height:44px; border-radius:11px;
+    display:grid; place-items:center;
+    background:rgba(255,255,255,0.05) !important;
+    color:var(--accent,#a78bfa);
+    margin-bottom:18px;
+    border:1px solid rgba(255,255,255,0.06);
+    box-shadow:inset 0 0 12px rgba(255,255,255,0.02);
   }
-  .lab-card h3 {
-    margin: 0 0 8px 0;
-    color: #fff;
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.2px;
+  .lab-card h3{ margin:0 0 8px 0; color:#fff; font-size:19px; font-weight:700; letter-spacing:-0.2px; }
+  .lab-card .desc{ color:rgba(255,255,255,0.58); font-size:14px; line-height:1.55; flex:1; }
+  .lab-card .card-footer{
+    margin-top:22px; padding-top:16px; border-top:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between; font-size:12px;
   }
-  .lab-card .desc {
-    color: rgba(255,255,255,0.6);
-    font-size: 14.5px;
-    line-height: 1.5;
-    flex: 1;
+  .company-tag{ color:rgba(255,255,255,0.42); letter-spacing:0.3px; font-weight:500; }
+  .enter-arrow{
+    color:var(--accent,#a78bfa); font-weight:600; font-size:13px;
+    opacity:0.85; transition:transform 0.2s, opacity 0.2s;
   }
-  .lab-card .card-footer {
-    margin-top: 22px;
-    padding-top: 16px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 12px;
-  }
-  .company-tag {
-    color: rgba(255,255,255,0.45);
-    letter-spacing: 0.3px;
-    font-weight: 500;
-  }
-  .enter-arrow {
-    color: var(--accent, #a78bfa);
-    font-weight: 600;
-    font-size: 13px;
-    opacity: 0.8;
-    transition: transform 0.2s;
-  }
-  .lab-card:hover .enter-arrow { transform: translateX(3px); opacity: 1; }
+  .lab-card:hover .enter-arrow{ transform:translateX(4px); opacity:1; }
 
-  /* ---------- SHARED RESPONSE ---------- */
-  .status-row {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 10px 14px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 12px;
-    font-family: 'JetBrains Mono', monospace;
+  /* ================= SHARED PRIMITIVES ================= */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:9px 16px; border-radius:8px; font-weight:500; font-size:13.5px;
+    transition:all 0.15s; border:1px solid transparent; line-height:1;
   }
-  .status-row.s200 { background: rgba(34,197,94,0.09); border: 1px solid rgba(34,197,94,0.25); color: #4ade80; }
-  .status-row.s401 { background: rgba(234,179,8,0.09); border: 1px solid rgba(234,179,8,0.28); color: #facc15; }
-  .status-row.s403 { background: rgba(249,115,22,0.09); border: 1px solid rgba(249,115,22,0.28); color: #fb923c; }
-  .status-row.s404 { background: rgba(148,163,184,0.09); border: 1px solid rgba(148,163,184,0.25); color: #cbd5e1; }
-  .status-row.s429 { background: rgba(239,68,68,0.10); border: 1px solid rgba(239,68,68,0.30); color: #f87171; }
-  .status-row.s201 { background: rgba(34,197,94,0.09); border: 1px solid rgba(34,197,94,0.25); color: #4ade80; }
-  .response-json {
-    background: #0a0e14;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 8px;
-    padding: 16px;
-    font-size: 13px;
-    color: #d1d5db;
-    white-space: pre-wrap;
-    word-break: break-word;
-    max-height: 440px;
-    overflow-y: auto;
-    line-height: 1.6;
-    font-family: 'JetBrains Mono', monospace;
+  .btn-primary{
+    background:#fff; color:#0a0c14;
   }
-  .json-key { color: #7dd3fc; }
-  .json-string { color: #86efac; }
-  .json-number { color: #fcd34d; }
-  .json-bool { color: #f9a8d4; }
-  .json-null { color: #94a3b8; }
-  .flag-block {
-    margin-top: 16px;
-    padding: 16px 18px;
-    background: linear-gradient(90deg, rgba(34,197,94,0.10), rgba(34,197,94,0.02));
-    border-left: 4px solid #22c55e;
-    border-radius: 7px;
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
+  .btn-primary:hover{ background:#e5e7eb; }
+  .btn-primary:disabled{ opacity:0.5; cursor:wait; }
+  .btn-accent{
+    background:linear-gradient(135deg, var(--accent,#6366f1), var(--accent,#818cf8));
+    color:#fff;
+    box-shadow:0 4px 14px -4px var(--accent-ring,rgba(129,140,248,0.4));
   }
-  .flag-block .flag-icon {
-    width: 28px;
-    height: 28px;
-    border-radius: 7px;
-    background: rgba(34,197,94,0.18);
-    display: grid;
-    place-items: center;
-    color: #22c55e;
-    flex-shrink: 0;
+  .btn-accent:hover{ filter:brightness(1.1); transform:translateY(-1px); }
+  .btn-accent:disabled{ opacity:0.5; cursor:wait; transform:none; }
+  .btn-outline{
+    background:rgba(255,255,255,0.03); color:var(--text);
+    border:1px solid var(--border-strong);
   }
-  .flag-label {
-    font-size: 11.5px;
-    font-weight: 700;
-    color: #22c55e;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    margin-bottom: 4px;
+  .btn-outline:hover{ background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.3); }
+  .btn-outline:disabled{ opacity:0.45; cursor:not-allowed; }
+  .btn-ghost{ color:var(--text-2); padding:6px 10px; }
+  .btn-ghost:hover{ color:var(--text); background:rgba(255,255,255,0.05); }
+
+  .input, .textarea, .select{
+    width:100%; padding:10px 12px; background:var(--bg-input);
+    border:1px solid var(--border); border-radius:7px;
+    font-size:13.5px; color:var(--text); outline:none;
+    transition:border-color 0.15s, box-shadow 0.15s;
   }
-  .flag-msg {
-    font-size: 13.5px;
-    color: rgba(255,255,255,0.75);
-    margin-bottom: 8px;
-    line-height: 1.5;
+  .input::placeholder, .textarea::placeholder{ color:var(--text-3); }
+  .input:focus, .textarea:focus, .select:focus{
+    border-color:var(--accent,#818cf8);
+    box-shadow:0 0 0 3px var(--accent-ring,rgba(129,140,248,0.22));
   }
-  .flag-value {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    color: #fff;
-    font-weight: 600;
-    background: rgba(0,0,0,0.35);
-    padding: 7px 12px;
-    border-radius: 5px;
-    display: inline-block;
-    word-break: break-all;
-    user-select: all;
+  .input.mono, .textarea.mono{ font-family:'JetBrains Mono',monospace; font-size:12.5px; }
+  .textarea{ resize:vertical; line-height:1.6; }
+  .select{ appearance:none; padding-right:30px; background-image:linear-gradient(45deg,transparent 50%,var(--text-2) 50%),linear-gradient(135deg,var(--text-2) 50%,transparent 50%); background-position:calc(100% - 15px) 50%, calc(100% - 10px) 50%; background-size:5px 5px; background-repeat:no-repeat; }
+  .select option{ background:#11141f; color:var(--text); }
+
+  .label{
+    display:block; font-size:11.5px; font-weight:600;
+    color:var(--text-2); letter-spacing:0.4px;
+    text-transform:uppercase; margin-bottom:7px;
   }
 
-  /* ---------- LAB 1 — VAULTHR ---------- */
-  .vh-wrap {
-    --vh-navy: #0f1729;
-    --vh-indigo: #4f46e5;
-    --vh-accent: #818cf8;
-    background: #0a0f1e;
-    min-height: calc(100vh - 60px);
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:12px; overflow:hidden;
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
   }
-  .vh-header {
-    padding: 22px 28px;
-    background: linear-gradient(135deg, #0f1729 0%, #1e1b4b 100%);
-    border-bottom: 1px solid rgba(129,140,248,0.18);
+  .card-head{
+    padding:14px 18px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    background:rgba(255,255,255,0.015);
   }
-  .vh-logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 18px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 4px;
-  }
-  .vh-logo-mark {
-    width: 28px; height: 28px;
-    border-radius: 7px;
-    background: linear-gradient(135deg, #4f46e5, #818cf8);
-    display: grid;
-    place-items: center;
-    color: #fff;
-    font-weight: 800;
-    font-size: 14px;
-  }
-  .vh-tag {
-    color: rgba(255,255,255,0.5);
-    font-size: 13px;
-    margin-left: 40px;
-  }
-  .vh-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 24px 28px 60px;
-  }
-  @media (max-width: 960px) {
-    .vh-layout { grid-template-columns: 1fr; }
-  }
-  .vh-panel {
-    background: #0f1729;
-    border: 1px solid rgba(129,140,248,0.16);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .vh-panel-head {
-    padding: 14px 18px;
-    border-bottom: 1px solid rgba(129,140,248,0.14);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(79,70,229,0.06);
-  }
-  .vh-panel-head h3 {
-    margin: 0;
-    font-size: 13px;
-    color: #c7d2fe;
-    letter-spacing: 0.4px;
-    font-weight: 600;
-    text-transform: uppercase;
-  }
-  .vh-panel-body { padding: 18px; }
+  .card-head h3{ font-size:14px; font-weight:600; color:#fff; }
+  .card-head .sub{ font-size:12.5px; color:var(--text-2); margin-top:2px; }
+  .card-body{ padding:18px; }
 
-  .vh-method-url {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-  .vh-method {
-    padding: 11px 14px;
-    background: rgba(34,197,94,0.12);
-    color: #4ade80;
-    border: 1px solid rgba(34,197,94,0.3);
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 13px;
-    font-family: 'JetBrains Mono', monospace;
-    letter-spacing: 0.5px;
-    display: grid;
-    place-items: center;
-    min-width: 62px;
-  }
-  .vh-url {
-    flex: 1;
-    padding: 11px 14px;
-    background: #0a0f1e;
-    border: 1px solid rgba(129,140,248,0.25);
-    border-radius: 8px;
-    color: #e0e7ff;
-    font-size: 13.5px;
-    font-family: 'JetBrains Mono', monospace;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .vh-url:focus { border-color: #6366f1; }
-
-  .vh-section-label {
-    font-size: 11.5px;
-    letter-spacing: 1.5px;
-    color: rgba(199,210,254,0.5);
-    font-weight: 600;
-    text-transform: uppercase;
-    margin: 14px 0 8px 0;
-  }
-  .vh-header-row {
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 10px;
-    padding: 9px 12px;
-    background: #0a0f1e;
-    border: 1px solid rgba(129,140,248,0.15);
-    border-radius: 7px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12.5px;
-    margin-bottom: 6px;
-  }
-  .vh-header-row .k { color: #a5b4fc; }
-  .vh-header-row .v { color: #cbd5e1; word-break: break-all; }
-
-  .vh-btn {
-    margin-top: 18px;
-    padding: 12px 20px;
-    width: 100%;
-    background: linear-gradient(135deg, #4f46e5, #6366f1);
-    color: #fff;
-    font-weight: 600;
-    font-size: 14px;
-    border-radius: 8px;
-    transition: all 0.18s;
-    letter-spacing: 0.3px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  .vh-btn:hover { background: linear-gradient(135deg, #6366f1, #818cf8); transform: translateY(-1px); }
-  .vh-btn:disabled { opacity: 0.5; cursor: wait; transform: none; }
-
-  .vh-empty {
-    color: rgba(199,210,254,0.35);
-    text-align: center;
-    padding: 60px 20px;
-    font-size: 13.5px;
-  }
-  .vh-meta {
-    display: flex;
-    gap: 16px;
-    font-size: 12px;
-    color: rgba(199,210,254,0.55);
-    margin-bottom: 14px;
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .vh-meta .lbl { color: rgba(199,210,254,0.35); margin-right: 4px; }
-
-  /* ---------- LAB 2 — NEXUS ---------- */
-  .nx-wrap {
-    background: #0b1020;
-    min-height: calc(100vh - 60px);
-  }
-  .nx-header {
-    padding: 22px 28px;
-    border-bottom: 1px solid rgba(139,92,246,0.18);
-    background: linear-gradient(135deg, #1a1033 0%, #0b1020 100%);
-  }
-  .nx-logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 18px;
-    font-weight: 700;
-    color: #fff;
-  }
-  .nx-logo-mark {
-    width: 28px; height: 28px;
-    border-radius: 9px;
-    background: linear-gradient(135deg, #a855f7, #7c3aed);
-    display: grid;
-    place-items: center;
-    color: #fff;
-    font-weight: 800;
-    font-size: 14px;
-  }
-  .nx-tag {
-    color: rgba(255,255,255,0.5);
-    font-size: 13px;
-    margin-left: 40px;
-    margin-top: 2px;
-  }
-  .nx-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 24px 28px 60px;
-  }
-  @media (max-width: 960px) {
-    .nx-layout { grid-template-columns: 1fr; }
-  }
-  .nx-panel {
-    background: #141829;
-    border: 1px solid rgba(139,92,246,0.17);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .nx-panel-head {
-    padding: 14px 18px;
-    border-bottom: 1px solid rgba(139,92,246,0.15);
-    background: rgba(139,92,246,0.06);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .nx-panel-head h3 {
-    margin: 0;
-    font-size: 13px;
-    color: #ddd6fe;
-    font-weight: 600;
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
-  }
-  .nx-panel-body { padding: 18px; }
-  .nx-endpoint {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 12px;
-    background: #0b1020;
-    border: 1px solid rgba(139,92,246,0.2);
-    border-radius: 7px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    margin-bottom: 18px;
-  }
-  .nx-endpoint .m {
-    background: rgba(234,179,8,0.15);
-    color: #facc15;
-    padding: 3px 9px;
-    border-radius: 4px;
-    font-size: 11.5px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-  }
-  .nx-endpoint .p { color: #ddd6fe; }
-  .nx-field-list {
-    background: #0b1020;
-    border: 1px solid rgba(139,92,246,0.15);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  .nx-field-row {
-    display: grid;
-    grid-template-columns: 130px 90px 1fr;
-    gap: 14px;
-    padding: 11px 14px;
-    border-bottom: 1px solid rgba(139,92,246,0.08);
-    font-size: 13px;
-  }
-  .nx-field-row:last-child { border-bottom: none; }
-  .nx-field-row .fname {
-    color: #c4b5fd;
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 500;
-  }
-  .nx-field-row .ftype {
-    color: rgba(196,181,253,0.5);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-  }
-  .nx-field-row .fdesc { color: rgba(255,255,255,0.55); font-size: 12.5px; }
-  .nx-req {
-    color: #f87171;
-    font-size: 10.5px;
-    margin-left: 4px;
-    text-transform: uppercase;
-    font-weight: 600;
+  .kbd{
+    display:inline-block; padding:1px 6px; background:rgba(255,255,255,0.05);
+    border:1px solid var(--border); border-radius:4px;
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--text);
   }
 
-  .nx-body-ta {
-    width: 100%;
-    height: 170px;
-    padding: 14px;
-    background: #0b1020;
-    border: 1px solid rgba(139,92,246,0.22);
-    border-radius: 8px;
-    color: #e9d5ff;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    outline: none;
-    resize: vertical;
-    line-height: 1.6;
-  }
-  .nx-body-ta:focus { border-color: #a855f7; }
+  .pill{ display:inline-flex; padding:2px 9px; border-radius:999px; font-size:11px; font-weight:600; letter-spacing:0.3px; }
+  .pill-gray{ background:rgba(255,255,255,0.06); color:var(--text-2); border:1px solid var(--border); }
+  .pill-blue{ background:rgba(96,165,250,0.14); color:#93c5fd; border:1px solid rgba(96,165,250,0.25); }
+  .pill-green{ background:rgba(52,211,153,0.14); color:#6ee7b7; border:1px solid rgba(52,211,153,0.28); }
+  .pill-amber{ background:rgba(251,191,36,0.14); color:#fcd34d; border:1px solid rgba(251,191,36,0.28); }
+  .pill-red{ background:rgba(248,113,113,0.14); color:#fca5a5; border:1px solid rgba(248,113,113,0.28); }
+  .pill-purple{ background:rgba(192,132,252,0.14); color:#d8b4fe; border:1px solid rgba(192,132,252,0.28); }
 
-  .nx-btn {
-    margin-top: 14px;
-    padding: 11px 20px;
-    background: linear-gradient(135deg, #7c3aed, #a855f7);
-    color: #fff;
-    font-weight: 600;
-    font-size: 14px;
-    border-radius: 8px;
-    transition: all 0.18s;
-    width: 100%;
+  .method-badge{
+    display:inline-block; padding:3px 8px; border-radius:4px;
+    font-family:'JetBrains Mono',monospace; font-size:11px;
+    font-weight:700; letter-spacing:0.5px;
   }
-  .nx-btn:hover { background: linear-gradient(135deg, #a855f7, #c084fc); }
-  .nx-btn:disabled { opacity: 0.5; cursor: wait; }
+  .mb-get{ background:rgba(96,165,250,0.14); color:#93c5fd; border:1px solid rgba(96,165,250,0.2); }
+  .mb-post{ background:rgba(52,211,153,0.14); color:#6ee7b7; border:1px solid rgba(52,211,153,0.2); }
+  .mb-put{ background:rgba(251,191,36,0.14); color:#fcd34d; border:1px solid rgba(251,191,36,0.2); }
+  .mb-delete{ background:rgba(248,113,113,0.14); color:#fca5a5; border:1px solid rgba(248,113,113,0.2); }
 
-  .nx-hint {
-    margin-top: 10px;
-    font-size: 12px;
-    color: rgba(196,181,253,0.45);
-    line-height: 1.5;
+  .status-row{
+    display:flex; align-items:center; gap:12px;
+    padding:10px 14px; border-radius:8px;
+    font-family:'JetBrains Mono',monospace; font-size:12.5px;
+    font-weight:500; margin-bottom:12px;
   }
+  .status-row.s200, .status-row.s201{ background:rgba(34,197,94,0.09); border:1px solid rgba(34,197,94,0.28); color:#86efac; }
+  .status-row.s401{ background:rgba(234,179,8,0.09); border:1px solid rgba(234,179,8,0.30); color:#fde047; }
+  .status-row.s403{ background:rgba(249,115,22,0.09); border:1px solid rgba(249,115,22,0.30); color:#fdba74; }
+  .status-row.s404{ background:rgba(148,163,184,0.08); border:1px solid rgba(148,163,184,0.22); color:#cbd5e1; }
+  .status-row.s429{ background:rgba(239,68,68,0.10); border:1px solid rgba(239,68,68,0.32); color:#fca5a5; }
+  .status-row.s400, .status-row.s422{ background:rgba(234,179,8,0.09); border:1px solid rgba(234,179,8,0.30); color:#fde047; }
 
-  /* ---------- LAB 3 — PULSEBANK ---------- */
-  .pb-wrap {
-    background: #0a0a0c;
-    color: #f5e3a1;
-    min-height: calc(100vh - 60px);
-    font-family: 'JetBrains Mono', monospace;
+  .response-json{
+    background:#07090f; border:1px solid var(--border);
+    border-radius:8px; padding:14px 16px; font-size:12.5px;
+    color:#d1d5db; white-space:pre-wrap; word-break:break-word;
+    max-height:380px; overflow-y:auto; line-height:1.68;
+    font-family:'JetBrains Mono',monospace;
   }
-  .pb-header {
-    padding: 20px 28px;
-    border-bottom: 1px solid rgba(245,158,11,0.20);
-    background: linear-gradient(135deg, #18120a 0%, #0a0a0c 100%);
+  .json-key{ color:#7dd3fc; }
+  .json-string{ color:#86efac; }
+  .json-number{ color:#fcd34d; }
+  .json-bool{ color:#f9a8d4; }
+  .json-null{ color:#94a3b8; }
+
+  .flag-block{
+    margin-top:16px; padding:16px 18px;
+    background:linear-gradient(90deg, rgba(16,185,129,0.14), rgba(16,185,129,0.02));
+    border:1px solid rgba(16,185,129,0.22);
+    border-left:4px solid #10b981; border-radius:8px;
+    display:flex; gap:14px; align-items:flex-start;
+    box-shadow:0 4px 24px -8px rgba(16,185,129,0.35);
   }
-  .pb-logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 17px;
-    font-weight: 700;
-    color: #fbbf24;
-    font-family: 'JetBrains Mono', monospace;
-    letter-spacing: 0.5px;
+  .flag-block .flag-icon{
+    width:30px; height:30px; border-radius:8px;
+    background:rgba(16,185,129,0.2); display:grid; place-items:center;
+    color:#10b981; flex-shrink:0; border:1px solid rgba(16,185,129,0.35);
   }
-  .pb-logo-mark {
-    width: 28px; height: 28px;
-    border-radius: 6px;
-    background: #fbbf24;
-    display: grid;
-    place-items: center;
-    color: #0a0a0c;
-    font-weight: 800;
-    font-size: 14px;
+  .flag-label{
+    font-size:11px; font-weight:700; color:#6ee7b7;
+    letter-spacing:1.6px; text-transform:uppercase; margin-bottom:5px;
   }
-  .pb-tag { color: rgba(245,158,11,0.6); font-size: 12.5px; margin-left: 40px; }
-  .pb-layout {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 22px 28px 60px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
-  .pb-panel {
-    background: #111111;
-    border: 1px solid rgba(245,158,11,0.18);
-    border-radius: 8px;
-  }
-  .pb-panel-head {
-    padding: 11px 16px;
-    border-bottom: 1px solid rgba(245,158,11,0.14);
-    color: #fbbf24;
-    font-size: 11.5px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    font-weight: 600;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .pb-panel-body { padding: 16px; }
-  .pb-target-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-  }
-  @media (max-width: 720px) {
-    .pb-target-grid { grid-template-columns: 1fr; }
-  }
-  .pb-stat {
-    padding: 12px 14px;
-    background: #0a0a0c;
-    border: 1px solid rgba(245,158,11,0.12);
-    border-radius: 6px;
-  }
-  .pb-stat .l {
-    font-size: 10.5px;
-    color: rgba(245,158,11,0.55);
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .pb-stat .v {
-    color: #fbbf24;
-    font-size: 14px;
-    font-weight: 600;
-  }
-  .pb-stat .sub {
-    color: rgba(245,227,161,0.45);
-    font-size: 11.5px;
-    margin-top: 3px;
+  .flag-msg{ font-size:13.5px; color:rgba(255,255,255,0.75); margin-bottom:10px; line-height:1.55; }
+  .flag-value{
+    font-family:'JetBrains Mono',monospace; font-size:14px;
+    color:#fff; font-weight:600;
+    background:rgba(0,0,0,0.45); border:1px solid rgba(16,185,129,0.3);
+    padding:7px 12px; border-radius:6px;
+    display:inline-block; word-break:break-all; user-select:all;
   }
 
-  .pb-row {
-    display: grid;
-    grid-template-columns: 70px 1fr;
-    gap: 10px;
-    margin-bottom: 12px;
-    align-items: center;
+  /* activity log panel */
+  .log-panel{
+    background:#05070d; color:#cbd5e1; border-radius:10px;
+    overflow:hidden; border:1px solid rgba(255,255,255,0.07);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
   }
-  .pb-label {
-    color: rgba(251,191,36,0.7);
-    font-size: 11.5px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-weight: 600;
+  .log-head{
+    padding:10px 14px; background:rgba(255,255,255,0.02);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    display:flex; align-items:center; justify-content:space-between;
+    font-size:11.5px; letter-spacing:1.3px; text-transform:uppercase;
+    font-weight:600; color:#94a3b8;
   }
-  .pb-method-btn {
-    background: rgba(236,72,153,0.12);
-    color: #f472b6;
-    border: 1px solid rgba(236,72,153,0.3);
-    padding: 10px 14px;
-    border-radius: 6px;
-    font-weight: 700;
-    font-size: 12.5px;
-    text-align: center;
-    letter-spacing: 0.5px;
+  .log-head .dot{ display:inline-flex; align-items:center; gap:8px; }
+  .log-head .dot::before{
+    content:''; width:7px; height:7px; border-radius:50%;
+    background:#10b981; box-shadow:0 0 10px #10b981;
   }
-  .pb-input {
-    width: 100%;
-    padding: 10px 12px;
-    background: #0a0a0c;
-    border: 1px solid rgba(245,158,11,0.22);
-    border-radius: 6px;
-    color: #f5e3a1;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    outline: none;
+  .log-body{
+    font-family:'JetBrains Mono',monospace; font-size:12px;
+    padding:10px 14px; max-height:240px; overflow-y:auto;
+    line-height:1.75;
   }
-  .pb-input:focus { border-color: #fbbf24; }
-  .pb-input.ro { color: rgba(245,227,161,0.7); background: #0a0a0c; cursor: not-allowed; }
+  .log-entry{ white-space:pre-wrap; word-break:break-all; padding:1px 0; }
+  .log-entry .ts{ color:#475569; margin-right:6px; }
+  .log-entry .tag{ display:inline-block; padding:0 5px; border-radius:3px; font-size:10.5px; font-weight:700; letter-spacing:0.3px; margin-right:6px; }
+  .log-entry .tag.req{ background:rgba(59,130,246,0.2); color:#93c5fd; }
+  .log-entry .tag.res-ok{ background:rgba(16,185,129,0.2); color:#6ee7b7; }
+  .log-entry .tag.res-warn{ background:rgba(234,179,8,0.2); color:#fde68a; }
+  .log-entry .tag.res-err{ background:rgba(239,68,68,0.2); color:#fca5a5; }
+  .log-entry .tag.note{ background:rgba(148,163,184,0.15); color:#cbd5e1; }
+  .log-entry.muted{ color:#64748b; }
+  .log-entry.ok{ color:#86efac; }
+  .log-entry.warn{ color:#fcd34d; }
+  .log-entry.err{ color:#fca5a5; }
+  .log-entry.info{ color:#93c5fd; }
+  .log-empty{ color:#475569; font-style:italic; text-align:center; padding:24px 0; }
 
-  .pb-header-box {
-    display: grid;
-    grid-template-columns: 170px 1fr;
-    gap: 8px;
-    align-items: center;
-    margin-bottom: 6px;
+  /* stage indicator */
+  .stages{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+  .stage{
+    display:inline-flex; align-items:center; gap:7px; padding:6px 12px;
+    background:rgba(255,255,255,0.03); border:1px solid var(--border);
+    border-radius:999px; font-size:12px; color:var(--text-2);
   }
-  .pb-header-box .hk {
-    padding: 9px 12px;
-    background: #0a0a0c;
-    border: 1px solid rgba(245,158,11,0.15);
-    border-radius: 6px;
-    font-size: 12.5px;
-    color: #fcd34d;
+  .stage .num{
+    width:18px; height:18px; border-radius:50%;
+    background:rgba(255,255,255,0.06); color:var(--text-2);
+    display:grid; place-items:center; font-size:11px; font-weight:700;
   }
-  .pb-header-box .hv {
-    padding: 9px 12px;
-    background: #0a0a0c;
-    border: 1px solid rgba(245,158,11,0.22);
-    border-radius: 6px;
-    font-size: 12.5px;
-    color: #f5e3a1;
-    font-family: 'JetBrains Mono', monospace;
-    outline: none;
-  }
-  .pb-header-box .hv:focus { border-color: #fbbf24; }
+  .stage.done{ border-color:rgba(16,185,129,0.35); background:rgba(16,185,129,0.1); color:#6ee7b7; }
+  .stage.done .num{ background:#10b981; color:#fff; }
+  .stage.active{ border-color:var(--accent); color:var(--accent); background:var(--accent-50); }
+  .stage.active .num{ background:var(--accent); color:#fff; }
 
-  .pb-note {
-    margin-top: 6px;
-    font-size: 11.5px;
-    color: rgba(245,227,161,0.5);
-    line-height: 1.5;
-  }
-  .pb-send {
-    padding: 11px 24px;
-    background: #fbbf24;
-    color: #0a0a0c;
-    border-radius: 6px;
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 0.5px;
-    transition: background 0.15s;
-  }
-  .pb-send:hover { background: #fcd34d; }
-  .pb-send:disabled { opacity: 0.5; cursor: wait; }
+  .split{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media (max-width:960px){ .split{ grid-template-columns:1fr; } }
 
-  .pb-log {
-    background: #08080a;
-    border: 1px solid rgba(245,158,11,0.14);
-    border-radius: 6px;
-    padding: 14px;
-    max-height: 340px;
-    overflow-y: auto;
-    font-size: 12.5px;
-    line-height: 1.7;
+  .lab-wrap{ max-width:1220px; margin:0 auto; padding:24px 26px 80px; }
+  .lab-header{
+    margin-bottom:22px; display:flex; align-items:flex-start;
+    justify-content:space-between; gap:20px; flex-wrap:wrap;
+    padding:20px 22px; border-radius:14px;
+    background:linear-gradient(135deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+    border:1px solid var(--border);
+    position:relative; overflow:hidden;
   }
-  .pb-log-entry { padding: 3px 0; white-space: pre-wrap; word-break: break-all; }
-  .pb-log-entry.s200 { color: #4ade80; }
-  .pb-log-entry.s401 { color: #facc15; }
-  .pb-log-entry.s429 { color: #f87171; }
-  .pb-log-entry.info { color: rgba(245,227,161,0.5); }
-  .pb-log-empty { color: rgba(245,227,161,0.3); font-style: italic; text-align: center; padding: 30px 0; }
+  .lab-header::before{
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse 400px 180px at 0% 0%, var(--accent-50), transparent 60%);
+    pointer-events:none;
+  }
+  .lab-brand{ display:flex; align-items:center; gap:14px; position:relative; z-index:1; }
+  .lab-brand .mark{
+    width:40px; height:40px; border-radius:11px; display:grid; place-items:center;
+    color:#fff; font-weight:800; font-size:16px;
+    box-shadow:0 4px 14px -4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  .lab-brand .name{ font-size:18px; font-weight:700; color:#fff; }
+  .lab-brand .env{ font-size:12.5px; color:rgba(255,255,255,0.6); margin-top:2px; }
 
-  /* ---------- LAB 4 — ORBITCMS ---------- */
-  .oc-wrap {
-    background: #0b1410;
-    min-height: calc(100vh - 60px);
-    color: #e7e1cf;
+  /* ================= LAB 1: VaultHR ================= */
+  .q1-accent{ --accent:#818cf8; --accent-50:rgba(129,140,248,0.12); --accent-ring:rgba(129,140,248,0.22); }
+  .q1-shell{ display:grid; grid-template-columns:220px 1fr; gap:20px; }
+  @media (max-width:900px){ .q1-shell{ grid-template-columns:1fr; } }
+  .q1-nav{
+    background:var(--bg-card); border:1px solid var(--border); border-radius:12px;
+    padding:10px; height:fit-content; position:sticky; top:80px;
+    backdrop-filter:blur(8px);
   }
-  .oc-header {
-    padding: 22px 28px;
-    border-bottom: 1px solid rgba(16,185,129,0.2);
-    background: linear-gradient(135deg, #0a1f18 0%, #0b1410 100%);
+  .q1-nav-item{
+    display:flex; align-items:center; gap:10px;
+    padding:9px 12px; border-radius:8px; font-size:13.5px;
+    color:var(--text-2); cursor:pointer; transition:all 0.12s;
   }
-  .oc-logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 18px;
-    font-weight: 700;
-    color: #f5f2e1;
+  .q1-nav-item:hover{ background:rgba(255,255,255,0.045); color:#fff; }
+  .q1-nav-item.active{
+    background:linear-gradient(90deg, rgba(129,140,248,0.18), rgba(129,140,248,0.04));
+    color:#c7d2fe; font-weight:600;
+    box-shadow:inset 2px 0 0 #818cf8;
   }
-  .oc-logo-mark {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #10b981, #059669);
-    display: grid;
-    place-items: center;
-    color: #f5f2e1;
-    font-weight: 800;
-    font-size: 14px;
-  }
-  .oc-tag { color: rgba(245,242,225,0.5); font-size: 13px; margin-left: 40px; margin-top: 2px;}
-  .oc-layout {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    gap: 20px;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 22px 28px 60px;
-  }
-  @media (max-width: 960px) {
-    .oc-layout { grid-template-columns: 1fr; }
-  }
-  .oc-sidebar {
-    background: #0e1a15;
-    border: 1px solid rgba(16,185,129,0.17);
-    border-radius: 10px;
-    padding: 16px;
-    height: fit-content;
-    position: sticky;
-    top: 78px;
-  }
-  .oc-sidebar h4 {
-    margin: 0 0 12px 0;
-    font-size: 11.5px;
-    letter-spacing: 1.6px;
-    color: rgba(245,242,225,0.5);
-    text-transform: uppercase;
-    font-weight: 600;
-  }
-  .oc-nav-group {
-    margin-bottom: 16px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid rgba(16,185,129,0.08);
-  }
-  .oc-nav-group:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-  .oc-nav-title {
-    font-size: 12.5px;
-    color: #a7f3d0;
-    font-weight: 600;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-  }
-  .oc-nav-item {
-    padding: 6px 10px 6px 22px;
-    font-size: 12.5px;
-    color: rgba(245,242,225,0.65);
-    font-family: 'JetBrains Mono', monospace;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .oc-nav-item:hover { background: rgba(16,185,129,0.07); color: #fff; }
-  .oc-nav-item .vb {
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-  }
-  .oc-nav-item .vb.get { background: rgba(59,130,246,0.15); color: #60a5fa; }
-  .oc-nav-item .vb.post { background: rgba(34,197,94,0.15); color: #4ade80; }
+  .q1-nav-item svg{ flex-shrink:0; }
 
-  .oc-main { display: flex; flex-direction: column; gap: 18px; }
-  .oc-panel {
-    background: #0e1a15;
-    border: 1px solid rgba(16,185,129,0.17);
-    border-radius: 10px;
-    overflow: hidden;
+  .profile-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:13px; }
+  .profile-grid > div{
+    padding:11px 13px; background:rgba(255,255,255,0.03);
+    border:1px solid var(--border); border-radius:8px;
   }
-  .oc-panel-head {
-    padding: 14px 18px;
-    border-bottom: 1px solid rgba(16,185,129,0.12);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(16,185,129,0.05);
+  .profile-grid .pk{
+    font-size:10.5px; color:var(--text-3); letter-spacing:0.6px;
+    text-transform:uppercase; margin-bottom:4px;
   }
-  .oc-panel-head h3 {
-    margin: 0;
-    color: #f5f2e1;
-    font-size: 15px;
-    font-weight: 600;
-  }
-  .oc-panel-head .sub { font-size: 12.5px; color: rgba(245,242,225,0.55); margin-top: 2px; }
-  .oc-ep-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .oc-ep-pill .vb {
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-  }
-  .oc-ep-pill .vb.get { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
-  .oc-ep-pill .vb.post { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
-  .oc-ep-pill .path { color: #e7e1cf; font-size: 13px; }
+  .profile-grid .pv{ color:#fff; font-weight:500; }
 
-  .oc-panel-body { padding: 18px; }
-  .oc-desc { color: rgba(245,242,225,0.65); font-size: 13px; margin-bottom: 14px; line-height: 1.55; }
-  .oc-try-btn {
-    padding: 8px 16px;
-    background: rgba(16,185,129,0.12);
-    color: #6ee7b7;
-    border: 1px solid rgba(16,185,129,0.3);
-    border-radius: 6px;
-    font-weight: 500;
-    font-size: 13px;
-    transition: all 0.15s;
+  .doc-row{
+    display:grid; grid-template-columns:auto 1fr auto auto; gap:14px;
+    padding:11px 14px; border:1px solid var(--border); border-radius:10px;
+    background:rgba(255,255,255,0.022); align-items:center; margin-bottom:8px;
+    transition:all 0.12s;
   }
-  .oc-try-btn:hover { background: rgba(16,185,129,0.2); color: #a7f3d0; }
+  .doc-row:hover{
+    border-color:rgba(129,140,248,0.4);
+    background:rgba(129,140,248,0.06);
+  }
+  .doc-icon{
+    width:34px; height:34px; border-radius:8px;
+    background:rgba(129,140,248,0.14); color:#a5b4fc;
+    display:grid; place-items:center;
+    border:1px solid rgba(129,140,248,0.22);
+  }
+  .doc-title{ font-weight:500; font-size:13.5px; color:#fff; }
+  .doc-sub{
+    font-size:11.5px; color:var(--text-3);
+    font-family:'JetBrains Mono',monospace; margin-top:2px;
+  }
+  .doc-meta{ font-size:12px; color:var(--text-2); }
 
-  .oc-tryit {
-    background: #0a1410;
-    border: 1px solid rgba(16,185,129,0.22);
-    border-radius: 10px;
-    padding: 18px;
+  .dir-row{
+    display:grid; grid-template-columns:50px 1fr 160px 120px; gap:14px;
+    padding:11px 14px; border-bottom:1px solid var(--border);
+    align-items:center; font-size:13px;
   }
-  .oc-tryit h3 {
-    margin: 0 0 12px 0;
-    font-size: 15px;
-    color: #f5f2e1;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  .dir-row:last-child{ border-bottom:none; }
+  .dir-row .avatar{
+    width:32px; height:32px; border-radius:50%;
+    background:linear-gradient(135deg, #a5b4fc, #6366f1);
+    color:#fff; display:grid; place-items:center;
+    font-weight:600; font-size:12px;
+    box-shadow:0 2px 8px -2px rgba(99,102,241,0.5);
   }
-  .oc-tryit .sub { font-size: 12.5px; color: rgba(245,242,225,0.55); margin-bottom: 14px; line-height: 1.5; }
-  .oc-url-row {
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    gap: 8px;
-    margin-bottom: 10px;
+  .dir-row .empid{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px; color:var(--text-2);
   }
-  .oc-method-sel {
-    padding: 10px;
-    background: rgba(59,130,246,0.1);
-    color: #60a5fa;
-    border: 1px solid rgba(59,130,246,0.3);
-    border-radius: 7px;
-    font-weight: 700;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12.5px;
-    text-align: center;
-    outline: none;
-    cursor: pointer;
-  }
-  .oc-method-sel option { background: #0a1410; }
-  .oc-url-in {
-    padding: 10px 13px;
-    background: #08110d;
-    border: 1px solid rgba(16,185,129,0.25);
-    border-radius: 7px;
-    color: #e7e1cf;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    outline: none;
-  }
-  .oc-url-in:focus { border-color: #10b981; }
-  .oc-jwt {
-    padding: 10px 13px;
-    background: #08110d;
-    border: 1px solid rgba(16,185,129,0.15);
-    border-radius: 7px;
-    color: rgba(245,242,225,0.6);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11.5px;
-    word-break: break-all;
-    margin-bottom: 10px;
-  }
-  .oc-jwt .lbl { color: rgba(245,242,225,0.4); margin-right: 6px; font-size: 11px; }
-  .oc-send {
-    padding: 10px 20px;
-    background: linear-gradient(135deg, #059669, #10b981);
-    color: #f5f2e1;
-    border-radius: 7px;
-    font-weight: 600;
-    font-size: 13.5px;
-    transition: all 0.18s;
-  }
-  .oc-send:hover { background: linear-gradient(135deg, #10b981, #34d399); }
-  .oc-send:disabled { opacity: 0.5; cursor: wait; }
 
-  /* responsive helpers */
-  .hide-sm { }
-  @media (max-width: 640px) {
-    .home-wrap { padding: 40px 18px 60px; }
-    .topnav { padding: 0 16px; }
-    .breadcrumb-bar { padding: 12px 16px; }
-    .vh-layout, .nx-layout, .oc-layout, .pb-layout { padding-left: 16px; padding-right: 16px; }
-    .vh-header, .nx-header, .pb-header, .oc-header { padding-left: 16px; padding-right: 16px; }
-    .hide-sm { display: none; }
+  .request-bar{
+    display:grid; grid-template-columns:64px 1fr auto; gap:8px; margin-bottom:12px;
+  }
+  .request-bar .method{
+    display:grid; place-items:center;
+    padding:10px; border-radius:8px;
+    background:rgba(96,165,250,0.14); color:#93c5fd;
+    border:1px solid rgba(96,165,250,0.22);
+    font-family:'JetBrains Mono',monospace; font-weight:700; font-size:12px;
+  }
+
+  /* ================= LAB 2: Nexus ================= */
+  .q2-accent{ --accent:#c084fc; --accent-50:rgba(192,132,252,0.12); --accent-ring:rgba(192,132,252,0.22); }
+  .q2-tabs{
+    display:flex; gap:2px; border-bottom:1px solid var(--border);
+    margin-bottom:18px; overflow-x:auto;
+  }
+  .q2-tab{
+    padding:11px 16px; font-size:13.5px; color:var(--text-2);
+    border-bottom:2px solid transparent; cursor:pointer; white-space:nowrap;
+    transition:all 0.12s;
+  }
+  .q2-tab:hover{ color:#fff; }
+  .q2-tab.active{
+    color:#d8b4fe; border-bottom-color:#c084fc; font-weight:600;
+  }
+  .q2-tab .lock{ opacity:0.55; margin-left:5px; }
+
+  .signup-wrap{ max-width:480px; }
+  .field{ margin-bottom:14px; }
+  .advanced-toggle{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:12.5px; color:var(--text-2);
+    cursor:pointer; margin-top:8px;
+    transition:color 0.15s;
+  }
+  .advanced-toggle:hover{ color:#d8b4fe; }
+
+  .account-card{
+    background:linear-gradient(135deg, rgba(124,58,237,0.14), rgba(192,132,252,0.05));
+    border:1px solid rgba(192,132,252,0.22);
+    border-radius:12px; padding:20px;
+    margin-bottom:16px;
+    position:relative; overflow:hidden;
+  }
+  .account-card::after{
+    content:''; position:absolute; top:-50%; right:-20%;
+    width:280px; height:280px;
+    background:radial-gradient(circle, rgba(192,132,252,0.18), transparent 70%);
+    pointer-events:none;
+  }
+  .vault-entry{
+    padding:12px 14px; border:1px solid var(--border);
+    border-radius:10px; display:flex; justify-content:space-between;
+    align-items:center; margin-bottom:8px;
+    background:rgba(255,255,255,0.022);
+    transition:all 0.12s;
+  }
+  .vault-entry:hover{
+    border-color:rgba(192,132,252,0.35);
+    background:rgba(192,132,252,0.05);
+  }
+  .vault-entry .ve-name{ font-weight:500; font-size:13.5px; color:#fff; }
+  .vault-entry .ve-sub{
+    font-size:11.5px; color:var(--text-3);
+    font-family:'JetBrains Mono',monospace; margin-top:2px;
+  }
+
+  .schema-row{
+    display:grid; grid-template-columns:170px 110px 1fr auto; gap:14px;
+    padding:11px 14px; font-size:12.5px;
+    border-bottom:1px solid var(--border);
+    align-items:center;
+  }
+  .schema-row:last-child{ border-bottom:none; }
+  .schema-row .s-name{ font-family:'JetBrains Mono',monospace; color:#d8b4fe; font-weight:500; }
+  .schema-row .s-type{ font-family:'JetBrains Mono',monospace; color:var(--text-3); font-size:11.5px; }
+  .schema-row .s-desc{ color:var(--text-2); }
+  .schema-row .s-mark{ font-size:10.5px; color:var(--text-3); font-family:'JetBrains Mono',monospace; }
+
+  /* ================= LAB 3: PulseBank ================= */
+  .q3-accent{ --accent:#fbbf24; --accent-50:rgba(251,191,36,0.12); --accent-ring:rgba(251,191,36,0.25); }
+  .q3-accent .card-head h3, .q3-accent .lab-brand .name{ color:#fef3c7; }
+  .q3-accent .summary-stat .v{ color:#fcd34d; }
+  .wizard{ display:grid; grid-template-columns:280px 1fr; gap:22px; }
+  @media (max-width:860px){ .wizard{ grid-template-columns:1fr; } }
+  .wizard-steps{
+    background:var(--bg-card); border:1px solid var(--border);
+    border-radius:12px; padding:14px;
+    height:fit-content; position:sticky; top:80px;
+  }
+  .wz-step{
+    display:flex; gap:12px; padding:10px 10px; border-radius:8px;
+    align-items:flex-start; opacity:0.5; margin-bottom:4px;
+    transition:all 0.15s;
+  }
+  .wz-step.active{
+    opacity:1; background:rgba(251,191,36,0.08);
+    border-left:2px solid #fbbf24; padding-left:10px;
+  }
+  .wz-step.done{ opacity:1; }
+  .wz-step.done .wz-num{ background:#10b981; color:#fff; box-shadow:0 0 10px rgba(16,185,129,0.4); }
+  .wz-step.active .wz-num{ background:#fbbf24; color:#0a0c14; box-shadow:0 0 10px rgba(251,191,36,0.4); }
+  .wz-num{
+    width:22px; height:22px; border-radius:50%;
+    background:rgba(255,255,255,0.06); color:var(--text-2);
+    display:grid; place-items:center; font-size:11.5px; font-weight:700;
+    flex-shrink:0;
+  }
+  .wz-lbl{ font-weight:500; font-size:13px; color:#fff; }
+  .wz-desc{ font-size:11.5px; color:var(--text-2); margin-top:3px; line-height:1.5; }
+
+  .summary-bar{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:12px;
+    margin-bottom:16px;
+  }
+  @media (max-width:720px){ .summary-bar{ grid-template-columns:repeat(2,1fr); } }
+  .summary-stat{
+    padding:13px 15px; background:var(--bg-card);
+    border:1px solid var(--border); border-radius:10px;
+  }
+  .summary-stat .l{
+    font-size:10.5px; color:var(--text-3);
+    letter-spacing:0.8px; text-transform:uppercase; margin-bottom:5px;
+  }
+  .summary-stat .v{ font-size:16px; font-weight:600; color:#fff; font-family:'JetBrains Mono',monospace; }
+
+  .pin-grid{ display:flex; gap:8px; margin:12px 0; }
+  .pin-digit{
+    width:52px; height:58px;
+    border:1px solid var(--border-strong); border-radius:8px;
+    text-align:center; font-size:22px; font-weight:600;
+    outline:none; background:var(--bg-input); color:#fff;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .pin-digit:focus{
+    border-color:#fbbf24;
+    box-shadow:0 0 0 3px rgba(251,191,36,0.18);
+  }
+
+  .header-editor{
+    display:grid; grid-template-columns:180px 1fr auto; gap:8px;
+    align-items:center; margin-bottom:6px;
+  }
+  .header-editor .hk, .header-editor .hv{
+    padding:8px 10px; background:var(--bg-input);
+    border:1px solid var(--border); border-radius:6px;
+    font-family:'JetBrains Mono',monospace; font-size:12px;
+    color:var(--text); outline:none;
+  }
+  .header-editor .hk{ color:var(--text-2); background:rgba(255,255,255,0.025); }
+  .header-editor .hv:focus{ border-color:#fbbf24; box-shadow:0 0 0 2px rgba(251,191,36,0.15); }
+  .header-editor .del{ padding:4px 8px; color:var(--text-3); }
+  .header-editor .del:hover{ color:#f87171; background:rgba(248,113,113,0.08); }
+
+  /* ================= LAB 4: OrbitCMS ================= */
+  .q4-accent{ --accent:#34d399; --accent-50:rgba(52,211,153,0.12); --accent-ring:rgba(52,211,153,0.22); }
+  .q4-shell{ display:grid; grid-template-columns:240px 1fr; gap:20px; }
+  @media (max-width:960px){ .q4-shell{ grid-template-columns:1fr; } }
+  .q4-nav{
+    background:var(--bg-card); border:1px solid var(--border); border-radius:12px;
+    padding:14px; height:fit-content; position:sticky; top:80px;
+  }
+  .q4-nav h4{
+    font-size:10.5px; letter-spacing:1.4px; text-transform:uppercase;
+    color:var(--text-3); font-weight:600; margin:0 0 8px 0; padding:0 6px;
+  }
+  .q4-group{
+    margin-bottom:12px; padding-bottom:10px;
+    border-bottom:1px solid rgba(255,255,255,0.04);
+  }
+  .q4-group:last-child{ border-bottom:none; }
+  .q4-group-title{
+    font-size:12.5px; color:#a7f3d0; font-weight:600; padding:6px 6px;
+    display:flex; align-items:center; gap:7px;
+  }
+  .q4-nav-item{
+    display:flex; align-items:center; gap:8px;
+    padding:6px 8px 6px 22px; font-size:12.5px; color:var(--text-2);
+    font-family:'JetBrains Mono',monospace; cursor:pointer; border-radius:6px;
+    transition:all 0.12s;
+  }
+  .q4-nav-item:hover{ background:rgba(52,211,153,0.06); color:#fff; }
+  .q4-nav-item.active{
+    background:rgba(52,211,153,0.12); color:#a7f3d0; font-weight:600;
+  }
+
+  .endpoint-header{
+    display:flex; align-items:center; gap:12px; padding:12px 16px;
+    background:rgba(255,255,255,0.025); border-radius:8px; margin-bottom:14px;
+    font-family:'JetBrains Mono',monospace; font-size:13px;
+  }
+  .try-panel{
+    background:linear-gradient(135deg, rgba(52,211,153,0.06), rgba(52,211,153,0.01));
+    border:1px solid rgba(52,211,153,0.22);
+    border-radius:12px; padding:18px;
+    position:relative; overflow:hidden;
+  }
+  .try-panel::before{
+    content:''; position:absolute; top:0; right:0;
+    width:200px; height:120px;
+    background:radial-gradient(circle at top right, rgba(52,211,153,0.08), transparent 70%);
+    pointer-events:none;
+  }
+
+  /* link */
+  .a-link{
+    color:var(--accent); font-weight:500; cursor:pointer;
+    text-decoration:underline; text-decoration-style:dotted;
+    text-underline-offset:3px;
+  }
+  .a-link:hover{ text-decoration-style:solid; }
+
+  /* utility */
+  .muted{ color:var(--text-2); }
+  .smaller{ font-size:12.5px; }
+  .mt-12{ margin-top:12px; } .mt-16{ margin-top:16px; } .mt-20{ margin-top:20px; }
+  .mb-6{ margin-bottom:6px; } .mb-8{ margin-bottom:8px; } .mb-12{ margin-bottom:12px; } .mb-16{ margin-bottom:16px; }
+  .flex{ display:flex; } .gap-8{ gap:8px; } .gap-12{ gap:12px; }
+  .items-center{ align-items:center; } .between{ justify-content:space-between; }
+  .grow{ flex:1; }
+  .hide{ display:none !important; }
+
+  @media (max-width:640px){
+    .topnav{ padding:0 16px; }
+    .crumbs{ padding:12px 16px; }
+    .lab-wrap{ padding:20px 16px 60px; }
   }
 </style>
 </head>
@@ -1060,42 +730,39 @@
 <div id="app"></div>
 
 <script>
-/* ---------- obfuscated flags (base64) ---------- */
+/* ---------- obfuscated flags ---------- */
 const _F = {
   q1: 'RmxhZ3tTY2FsZXJfQVVMVC1CT0xBLTFkLTRjYzNzcy1ieXA0c3N9',
   q2: 'RmxhZ3tTY2FsZXJfTkVYVVMtTUFTUy00U1MxR04tUFIxVi1FU0N9',
-  q3: 'RmFsZ3tTY2FsZXJfUFVMU0UtUjRUMy1MMU0xVC1YLUZXRC1CWVA0U1N9',
+  q3: 'RmxhZ3tTY2FsZXJfUFVMU0UtUjRUMy1MMU0xVC1YLUZXRC1CWVA0U1N9',
   q4: 'RmxhZ3tTY2FsZXJfT1JCSVQtRlVOQ1QxME4tTDNWM0wtQVVUSC1CWVA0U1N9'
-};
-const _S = {
-  q1Token: 'VkFVTFQtQk9MQS0xMDk5LUNPTkY=',
-  q2Token: 'TkVYVVMtTUFTUy00U1MxR04tUFIxVi1FU0M=',
-  q4Token: 'T1JCSVQtRlVOQ1QxME4tTDNWM0wtQVVUSC1CWVA0U1M='
 };
 const dec = s => atob(s);
 
 /* ---------- helpers ---------- */
 const $ = (sel, r = document) => r.querySelector(sel);
+const $$ = (sel, r = document) => Array.from(r.querySelectorAll(sel));
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-function syntaxJSON(obj) {
+function syntaxJSON(obj){
   const j = JSON.stringify(obj, null, 2);
-  return j.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/("(?:\\.|[^"\\])*")(\s*:)/g, '<span class="json-key">$1</span>$2')
-    .replace(/:\s*("(?:\\.|[^"\\])*")/g, ': <span class="json-string">$1</span>')
-    .replace(/:\s*(-?\d+\.?\d*)/g, ': <span class="json-number">$1</span>')
-    .replace(/:\s*(true|false)/g, ': <span class="json-bool">$1</span>')
-    .replace(/:\s*null/g, ': <span class="json-null">null</span>');
+  return j.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/("(?:\\.|[^"\\])*")(\s*:)/g,'<span class="json-key">$1</span>$2')
+    .replace(/:\s*("(?:\\.|[^"\\])*")/g,': <span class="json-string">$1</span>')
+    .replace(/:\s*(-?\d+\.?\d*)/g,': <span class="json-number">$1</span>')
+    .replace(/:\s*(true|false)/g,': <span class="json-bool">$1</span>')
+    .replace(/:\s*null/g,': <span class="json-null">null</span>');
 }
 
-function flagBlock(message, flag) {
+function flagBlock(message, flag){
   return `
     <div class="flag-block">
       <div class="flag-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
       </div>
       <div style="flex:1">
-        <div class="flag-label">Exploit Successful</div>
+        <div class="flag-label">Objective Complete</div>
         <div class="flag-msg">${esc(message)}</div>
         <div class="flag-value">${esc(flag)}</div>
       </div>
@@ -1103,7 +770,48 @@ function flagBlock(message, flag) {
   `;
 }
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function statusRow(status, text, meta){
+  const cls = 's' + status;
+  return `<div class="status-row ${cls}"><strong>${status}</strong><span style="opacity:0.8;">${esc(text)}</span>${meta?`<span style="margin-left:auto; opacity:0.65;">${esc(meta)}</span>`:''}</div>`;
+}
+
+function nowTs(){
+  const d = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}.${String(d.getMilliseconds()).padStart(3,'0')}`;
+}
+
+/* ---------- log panel helpers ---------- */
+function makeLog(logId, initialNote){
+  return `
+    <div class="log-panel">
+      <div class="log-head">
+        <span class="dot">Network &amp; Server Activity</span>
+        <span style="color:#475569; font-weight:500;">${initialNote||'live'}</span>
+      </div>
+      <div class="log-body" id="${logId}">
+        <div class="log-empty">// waiting for activity</div>
+      </div>
+    </div>`;
+}
+
+function logPush(logId, entries){
+  const el = document.getElementById(logId);
+  if (!el) return;
+  const empty = el.querySelector('.log-empty');
+  if (empty) empty.remove();
+  const lines = Array.isArray(entries) ? entries : [entries];
+  lines.forEach(line => {
+    const div = document.createElement('div');
+    div.className = 'log-entry ' + (line.cls || '');
+    const ts = `<span class="ts">${nowTs()}</span>`;
+    let tagHtml = '';
+    if (line.tag) tagHtml = `<span class="tag ${line.tagCls||''}">${esc(line.tag)}</span>`;
+    div.innerHTML = `${ts}${tagHtml}${line.html || esc(line.text || '')}`;
+    el.appendChild(div);
+  });
+  el.scrollTop = el.scrollHeight;
+}
 
 /* ---------- router ---------- */
 const routes = {
@@ -1114,20 +822,20 @@ const routes = {
   'q4': renderQ4
 };
 
-function route() {
+function route(){
   const h = (location.hash || '#home').slice(1);
   const fn = routes[h] || renderHome;
   $('#app').innerHTML = '';
-  fn();
+  try{ fn(); } catch(e){ console.error(e); $('#app').innerHTML = '<div class="lab-wrap">Something went wrong.</div>'; }
   window.scrollTo(0, 0);
 }
 window.addEventListener('hashchange', route);
 
-function breadcrumb(labName) {
+function breadcrumb(labName){
   return `
-    <div class="breadcrumb-bar">
+    <div class="crumbs">
       <a href="#home" class="back-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         Back
       </a>
       <span>Labs</span>
@@ -1139,64 +847,45 @@ function breadcrumb(labName) {
   `;
 }
 
+function stagesHTML(stages, current){
+  return `<div class="stages">${stages.map((s,i)=>{
+    const state = i < current ? 'done' : (i === current ? 'active' : '');
+    return `<div class="stage ${state}"><div class="num">${i+1}</div>${esc(s)}</div>`;
+  }).join('<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>')}</div>`;
+}
+
 /* ==================================================================== */
 /*                              HOME                                    */
 /* ==================================================================== */
-
-function renderHome() {
+function renderHome(){
   const cards = [
-    {
-      route: '#q1',
-      accent: '#818cf8',
-      accentBg: 'rgba(129,140,248,0.13)',
-      icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
-      title: 'Object Level Authorization',
-      desc: 'Access records you were never meant to see.',
-      company: 'VaultHR People API'
-    },
-    {
-      route: '#q2',
-      accent: '#c084fc',
-      accentBg: 'rgba(192,132,252,0.13)',
-      icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
-      title: 'Mass Assignment',
-      desc: 'Smuggle hidden fields past a trusting API.',
-      company: 'Nexus Platform'
-    },
-    {
-      route: '#q3',
-      accent: '#fbbf24',
-      accentBg: 'rgba(251,191,36,0.13)',
-      icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
-      title: 'Rate Limit Bypass',
-      desc: 'Exhaust the key space before the server notices.',
-      company: 'PulseBank Security API'
-    },
-    {
-      route: '#q4',
-      accent: '#34d399',
-      accentBg: 'rgba(52,211,153,0.13)',
-      icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>',
-      title: 'Function Level Authorization',
-      desc: 'Call the endpoints your role should never reach.',
-      company: 'OrbitCMS Admin API'
-    }
+    { route:'#q1', accent:'#4f46e5', accentBg:'#eef2ff',
+      icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+      title:'Document Access', desc:'An HR portal where employees can retrieve their own records. Something slips through.', company:'VaultHR People Portal' },
+    { route:'#q2', accent:'#7c3aed', accentBg:'#f5f3ff',
+      icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11h-6"/><path d="M19 8v6"/></svg>',
+      title:'Workspace Signup', desc:'New accounts spin up in seconds. Every registration ends up in the same user model.', company:'Nexus Platform' },
+    { route:'#q3', accent:'#1e3a8a', accentBg:'#eff6ff',
+      icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+      title:'Account Recovery', desc:'A four-digit PIN stands between you and a locked account. The server has its defenses.', company:'PulseBank Customer Portal' },
+    { route:'#q4', accent:'#059669', accentBg:'#ecfdf5',
+      icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+      title:'Publishing Workspace', desc:'An editor account with a documented API. Not every route is on the map.', company:'OrbitCMS Admin Portal' }
   ];
-
   $('#app').innerHTML = `
     <div class="home-wrap">
       <div class="home-eyebrow">API Authorization Attacks</div>
-      <h1 class="home-title">Break the perimeter.<br/>Break the logic.</h1>
-      <p class="home-sub">Four hands-on exercises where you exploit real-world API authorization flaws. Each lab simulates a production-grade API. The flag appears only after you execute the correct attack.</p>
+      <h1 class="home-title">Find the flaw.<br/>Chain the request.</h1>
+      <p class="home-sub">Four sandboxed product environments. Each hides an authorization flaw in its business logic. You explore, probe, and chain requests together until the system reveals what it shouldn't.</p>
       <div class="cards-grid">
         ${cards.map(c => `
           <a href="${c.route}" class="lab-card" style="--accent:${c.accent}; --accent-bg:${c.accentBg};">
-            <div class="icon-box">${c.icon}</div>
+            <div class="icon-box" style="background:${c.accentBg};">${c.icon}</div>
             <h3>${c.title}</h3>
             <div class="desc">${c.desc}</div>
             <div class="card-footer">
               <span class="company-tag">${c.company}</span>
-              <span class="enter-arrow">Launch →</span>
+              <span class="enter-arrow">Open →</span>
             </div>
           </a>
         `).join('')}
@@ -1206,698 +895,1453 @@ function renderHome() {
 }
 
 /* ==================================================================== */
-/*                           LAB 1 — VaultHR BOLA                       */
+/*                           LAB PLACEHOLDERS                           */
 /* ==================================================================== */
+function renderQ1(){ $('#app').innerHTML = breadcrumb('Document Access') + '<div class="lab-wrap q1-accent">Loading…</div>'; }
+function renderQ2(){ $('#app').innerHTML = breadcrumb('Workspace Signup') + '<div class="lab-wrap q2-accent">Loading…</div>'; }
+function renderQ3(){ $('#app').innerHTML = breadcrumb('Account Recovery') + '<div class="lab-wrap q3-accent">Loading…</div>'; }
+function renderQ4(){ $('#app').innerHTML = breadcrumb('Publishing Workspace') + '<div class="lab-wrap q4-accent">Loading…</div>'; }
 
-function renderQ1() {
+/* ==================================================================== */
+/*                    LAB IMPLEMENTATIONS (injected below)             */
+/* ==================================================================== */
+/* ==================================================================== */
+/*                       LAB 1 — VaultHR                                */
+/* ==================================================================== */
+const Q1 = {
+  state:{ tab:'dashboard', archiveRefFound:null, solved:false, viewedDocs:new Set(), currentDocPath:'' },
+  meId:1042,
+  meName:'Jordan Patel',
+  archiveRef:'arx_7f3a9c_vaulthr_severance_0421',
+  directory:[
+    {id:1038, name:'Asha Menon', dept:'Engineering', title:'Senior Engineer', office:'BLR'},
+    {id:1042, name:'Jordan Patel', dept:'Engineering', title:'Senior Engineer', office:'NYC', me:true},
+    {id:1051, name:'Marcus Huang', dept:'Finance', title:'Senior Analyst', office:'NYC'},
+    {id:1063, name:'Priya Raman', dept:'People Ops', title:'HR Business Partner', office:'SF'},
+    {id:1074, name:'Diego Salazar', dept:'Product', title:'Product Manager', office:'SF'},
+    {id:1086, name:'Chen Wei', dept:'Engineering', title:'Engineering Manager', office:'SGP'},
+    {id:1099, name:'Elena Vasquez', dept:'Executive', title:'VP, Corporate Affairs', office:'NYC'},
+    {id:1102, name:'Noor Haddad', dept:'Security', title:'Security Engineer', office:'LON'},
+    {id:1117, name:'Samira Okoye', dept:'Legal', title:'Senior Counsel', office:'LON'},
+    {id:1128, name:'Hugo Moreau', dept:'Marketing', title:'Brand Director', office:'NYC'},
+    {id:1140, name:'Lena Kowalski', dept:'Data Science', title:'Data Scientist', office:'SF'},
+    {id:1156, name:'Kenji Ito', dept:'Engineering', title:'Staff Engineer', office:'SGP'},
+    {id:1171, name:'Ines Lindqvist', dept:'People Ops', title:'Recruiter', office:'LON'},
+    {id:1184, name:'Owen Walsh', dept:'Support', title:'Support Lead', office:'NYC'},
+    {id:1195, name:'Zara Adebayo', dept:'Product', title:'Product Designer', office:'BLR'}
+  ]
+};
+
+function renderQ1(){
+  Q1.state = { tab:'dashboard', archiveRefFound:null, solved:false, viewedDocs:new Set(), currentDocPath:`/api/v1/documents/DOC-${Q1.meId}-01` };
   $('#app').innerHTML = `
-    ${breadcrumb('Object Level Authorization')}
-    <div class="vh-wrap">
-      <div class="vh-header">
-        <div class="vh-logo">
-          <span class="vh-logo-mark">V</span>
-          <span>VaultHR</span>
-          <span style="color:rgba(255,255,255,0.35); font-weight:400; font-size:13px; margin-left:6px;">People API · v1</span>
+    ${breadcrumb('Document Access')}
+    <div class="lab-wrap q1-accent">
+      <div class="lab-header">
+        <div class="lab-brand">
+          <div class="mark" style="background:linear-gradient(135deg,#4f46e5,#818cf8);">V</div>
+          <div>
+            <div class="name">VaultHR People Portal</div>
+            <div class="env">Signed in as <strong>${Q1.meName}</strong> · employee_id=${Q1.meId} · role=employee</div>
+          </div>
         </div>
-        <div class="vh-tag">Employee profile service · Authenticated as <span style="color:#a5b4fc; font-family:'JetBrains Mono',monospace;">employee_id=1042</span></div>
+        <div class="pill pill-blue" style="align-self:center;">Session · Bearer vh_sess_8c2f…</div>
       </div>
 
-      <div class="vh-layout">
-        <div class="vh-panel">
-          <div class="vh-panel-head">
-            <h3>Request Builder</h3>
-            <span style="font-size:11px; color:rgba(199,210,254,0.4);">HTTP/1.1</span>
-          </div>
-          <div class="vh-panel-body">
-            <div class="vh-method-url">
-              <div class="vh-method">GET</div>
-              <input id="vhUrl" class="vh-url" value="https://api.vaulthr.internal/v1/employees/1042" spellcheck="false" />
-            </div>
-
-            <div class="vh-section-label">Headers</div>
-            <div class="vh-header-row">
-              <div class="k">Authorization</div>
-              <div class="v">Bearer eyJhbGciOi...session.1042</div>
-            </div>
-            <div class="vh-header-row">
-              <div class="k">Accept</div>
-              <div class="v">application/json</div>
-            </div>
-            <div class="vh-header-row">
-              <div class="k">X-Client</div>
-              <div class="v">vaulthr-web/4.1.2</div>
-            </div>
-
-            <button id="vhSend" class="vh-btn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-              Send Request
-            </button>
-            <div style="margin-top:14px; padding:10px 12px; background:rgba(79,70,229,0.08); border-left:2px solid #6366f1; border-radius:4px; font-size:12.5px; color:rgba(199,210,254,0.7); line-height:1.5;">
-              <strong style="color:#c7d2fe;">Tip:</strong> Your session is pinned to employee 1042, but the URL path isn't. Valid employee IDs range from <span class="mono" style="color:#a5b4fc;">1000</span> to <span class="mono" style="color:#a5b4fc;">1200</span>.
-            </div>
-          </div>
+      <div class="q1-shell">
+        <div class="q1-nav" id="q1Nav">
+          ${q1NavItem('dashboard','Dashboard','<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>')}
+          ${q1NavItem('profile','My Profile','<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>')}
+          ${q1NavItem('documents','My Documents','<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>')}
+          ${q1NavItem('directory','Team Directory','<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>')}
+          ${q1NavItem('archive','Archive Lookup','<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>')}
         </div>
 
-        <div class="vh-panel">
-          <div class="vh-panel-head">
-            <h3>Response</h3>
-            <span id="vhMeta2" style="font-size:11px; color:rgba(199,210,254,0.4);"></span>
-          </div>
-          <div class="vh-panel-body">
-            <div id="vhResp">
-              <div class="vh-empty">Send a request to see the response.</div>
-            </div>
+        <div>
+          <div id="q1Main"></div>
+          <div style="margin-top:18px;">
+            ${makeLog('q1Log','vaulthr-edge-01')}
           </div>
         </div>
       </div>
     </div>
   `;
 
-  $('#vhSend').addEventListener('click', q1Send);
-  $('#vhUrl').addEventListener('keydown', e => { if (e.key === 'Enter') q1Send(); });
+  $$('#q1Nav .q1-nav-item').forEach(el => {
+    el.addEventListener('click', () => q1SetTab(el.dataset.tab));
+  });
+  q1SetTab('dashboard');
+  logPush('q1Log', [
+    { tag:'note', tagCls:'note', text:'session established · user=jordan.patel scope=employee' },
+    { tag:'note', tagCls:'note', text:'portal loaded · modules=[profile, documents, directory, archive]' }
+  ]);
 }
 
-async function q1Send() {
-  const btn = $('#vhSend');
-  const resp = $('#vhResp');
-  const url = $('#vhUrl').value.trim();
+function q1NavItem(tab, label, icon){
+  return `<div class="q1-nav-item" data-tab="${tab}">${icon}<span>${label}</span></div>`;
+}
+
+function q1SetTab(tab){
+  Q1.state.tab = tab;
+  $$('#q1Nav .q1-nav-item').forEach(el => el.classList.toggle('active', el.dataset.tab === tab));
+  const main = $('#q1Main');
+  if (tab === 'dashboard') main.innerHTML = q1Dashboard();
+  else if (tab === 'profile') main.innerHTML = q1Profile();
+  else if (tab === 'documents') { main.innerHTML = q1Documents(); q1BindDocs(); }
+  else if (tab === 'directory') { main.innerHTML = q1Directory(); q1BindDirectory(); }
+  else if (tab === 'archive') { main.innerHTML = q1Archive(); q1BindArchive(); }
+}
+
+function q1Dashboard(){
+  return `
+    <div class="card">
+      <div class="card-head"><h3>Welcome, Jordan</h3><span class="pill pill-gray">v4.2.1</span></div>
+      <div class="card-body">
+        <p class="muted smaller" style="margin:0 0 14px 0; line-height:1.6;">Your self-service portal for payroll, benefits, and personal records. Review your documents, look up teammates, or retrieve an archived reference.</p>
+        <div class="profile-grid">
+          <div><div class="pk">Open Items</div><div class="pv">0 pending</div></div>
+          <div><div class="pk">Last Payroll</div><div class="pv">Apr 15, 2026</div></div>
+          <div><div class="pk">Time Off Balance</div><div class="pv">14.5 days</div></div>
+          <div><div class="pk">Manager</div><div class="pv">Chen Wei</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card mt-16">
+      <div class="card-head"><h3>Recent Activity</h3></div>
+      <div class="card-body" style="padding:0;">
+        ${[
+          {k:'Q1 Payslip generated', d:'Apr 15 · 09:02'},
+          {k:'Benefits enrollment reminder', d:'Apr 10 · 13:44'},
+          {k:'Annual review form sent', d:'Apr 03 · 11:10'}
+        ].map(x => `<div style="display:flex; justify-content:space-between; padding:12px 18px; border-bottom:1px solid var(--border); font-size:13.5px;">
+          <span>${x.k}</span><span class="muted smaller">${x.d}</span></div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function q1Profile(){
+  const me = Q1.directory.find(d=>d.me);
+  return `
+    <div class="card">
+      <div class="card-head"><h3>My Profile</h3><span class="pill pill-gray">read-only</span></div>
+      <div class="card-body">
+        <div class="flex items-center gap-12 mb-16">
+          <div style="width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,#6366f1,#4f46e5); color:#fff; display:grid; place-items:center; font-size:20px; font-weight:600;">JP</div>
+          <div>
+            <div style="font-size:18px; font-weight:600;">${me.name}</div>
+            <div class="muted smaller">${me.title} · ${me.dept}</div>
+          </div>
+        </div>
+        <div class="profile-grid">
+          <div><div class="pk">Employee ID</div><div class="pv mono">${me.id}</div></div>
+          <div><div class="pk">Office</div><div class="pv">${me.office}</div></div>
+          <div><div class="pk">Email</div><div class="pv">jordan.patel@vaulthr.com</div></div>
+          <div><div class="pk">Status</div><div class="pv">Active</div></div>
+          <div><div class="pk">Hired</div><div class="pv">Mar 17, 2022</div></div>
+          <div><div class="pk">Manager</div><div class="pv">Chen Wei (1086)</div></div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function q1OwnDocs(){
+  return [
+    { id:`DOC-${Q1.meId}-01`, title:'2026 Q1 Payslip', kind:'Payslip', issued:'Apr 15, 2026' },
+    { id:`DOC-${Q1.meId}-02`, title:'Benefits Enrollment Form', kind:'Benefits', issued:'Jan 08, 2026' },
+    { id:`DOC-${Q1.meId}-03`, title:'2025 Annual Tax Statement', kind:'Tax', issued:'Feb 22, 2026' }
+  ];
+}
+
+function q1Documents(){
+  const docs = q1OwnDocs();
+  return `
+    <div class="card">
+      <div class="card-head">
+        <div><h3>My Documents</h3><div class="sub">Documents filed under your employee record.</div></div>
+      </div>
+      <div class="card-body">
+        ${docs.map(d => `
+          <div class="doc-row" data-docid="${d.id}">
+            <div class="doc-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div>
+              <div class="doc-title">${d.title}</div>
+              <div class="doc-sub">${d.id}</div>
+            </div>
+            <div class="doc-meta">${d.kind}</div>
+            <button class="btn btn-outline" data-open="${d.id}">Open</button>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="card mt-16">
+      <div class="card-head">
+        <div><h3>Document Viewer</h3><div class="sub">Retrieve a document by its resource path.</div></div>
+        <span class="pill pill-gray mono">GET</span>
+      </div>
+      <div class="card-body">
+        <div class="request-bar">
+          <div class="method">GET</div>
+          <input id="q1Url" class="input mono" value="${esc(Q1.state.currentDocPath)}" spellcheck="false" />
+          <button id="q1Send" class="btn btn-accent">Load Document</button>
+        </div>
+        <div id="q1DocResp"></div>
+      </div>
+    </div>
+  `;
+}
+
+function q1BindDocs(){
+  $$('#q1Main [data-open]').forEach(b => {
+    b.addEventListener('click', () => {
+      const id = b.dataset.open;
+      $('#q1Url').value = `/api/v1/documents/${id}`;
+      q1LoadDoc();
+    });
+  });
+  $('#q1Send').addEventListener('click', q1LoadDoc);
+  $('#q1Url').addEventListener('keydown', e => { if (e.key === 'Enter') q1LoadDoc(); });
+}
+
+async function q1LoadDoc(){
+  const btn = $('#q1Send');
+  const out = $('#q1DocResp');
+  const url = $('#q1Url').value.trim();
+  Q1.state.currentDocPath = url;
   btn.disabled = true;
-  resp.innerHTML = `<div class="vh-empty"><span style="opacity:0.6;">Sending…</span></div>`;
+  out.innerHTML = `<div class="muted smaller" style="padding:10px 0;">Loading…</div>`;
+  logPush('q1Log', { tag:'GET', tagCls:'req', html:`<span style="color:#93c5fd;">${esc(url)}</span>` });
   const t0 = performance.now();
-  await sleep(180 + Math.random() * 120);
+  await sleep(170 + Math.random()*130);
   const dt = Math.round(performance.now() - t0);
 
-  const match = url.match(/\/v1\/employees\/(\d+)/);
+  const m = url.match(/\/api\/v1\/documents\/DOC-(\d+)-(\d+)/);
   let status = 404, statusText = 'Not Found', body;
 
-  if (!match) {
-    body = { error: 'route_not_found', message: 'No handler for the requested path.' };
+  if (!m) {
+    body = { error:'route_not_found', hint:'expected /api/v1/documents/DOC-{employee_id}-{seq}' };
+    logPush('q1Log', { tag:'404', tagCls:'res-err', cls:'err', text:`route not found (${dt}ms)` });
   } else {
-    const id = parseInt(match[1], 10);
-    if (id < 1000 || id > 1200) {
-      status = 404; statusText = 'Not Found';
-      body = { error: 'employee_not_found', message: `No employee with id=${id}.` };
+    const ownerId = parseInt(m[1],10), seq = parseInt(m[2],10);
+    const owner = Q1.directory.find(d=>d.id===ownerId);
+    if (ownerId < 1000 || ownerId > 1200 || seq < 1 || seq > 5) {
+      body = { error:'document_not_found', document_id: `DOC-${ownerId}-${String(seq).padStart(2,'0')}` };
+      logPush('q1Log', { tag:'404', tagCls:'res-err', cls:'err', text:`document not found (${dt}ms)` });
     } else {
       status = 200; statusText = 'OK';
-      body = q1Employee(id);
+      body = q1BuildDocument(ownerId, seq, owner);
+      Q1.state.viewedDocs.add(`${ownerId}-${seq}`);
+      logPush('q1Log', [
+        { tag:'200', tagCls:'res-ok', cls:'ok', text:`document served (${dt}ms)` },
+        { tag:'auth', tagCls:'note', cls:'muted', text:`session.user_id=${Q1.meId}  resource.owner_id=${ownerId}  ${ownerId===Q1.meId?'✓ own_record':'↯ cross_user (endpoint does not validate resource ownership)'}` }
+      ]);
+      if (ownerId === 1099 && seq === 1) {
+        logPush('q1Log', { tag:'ref', tagCls:'note', cls:'info', text:'response body includes field archive_reference → consult the Archive Lookup endpoint' });
+      }
     }
   }
 
-  const cls = status === 200 ? 's200' : (status === 404 ? 's404' : 's401');
-  let html = `
-    <div class="vh-meta"><span><span class="lbl">Time</span>${dt}ms</span><span><span class="lbl">Size</span>${new Blob([JSON.stringify(body)]).size}B</span></div>
-    <div class="status-row ${cls}">
-      <strong>${status}</strong><span style="opacity:0.7;">${statusText}</span>
-    </div>
-    <pre class="response-json">${syntaxJSON(body)}</pre>
-  `;
-  if (status === 200 && body.severance_agreement) {
-    html += flagBlock('Unauthorized record accessed. Object-level authorization was not enforced.', dec(_F.q1));
-  }
-  resp.innerHTML = html;
+  let html = statusRow(status, statusText, `${dt}ms · ${new Blob([JSON.stringify(body)]).size}B`);
+  html += `<pre class="response-json">${syntaxJSON(body)}</pre>`;
+  out.innerHTML = html;
   btn.disabled = false;
 }
 
-function q1Employee(id) {
-  const depts = ['Engineering','People Ops','Finance','Legal','Marketing','Product','Security','Data Science','Support','Facilities'];
-  const titles = ['Senior Engineer','HR Partner','Analyst','Counsel','Brand Manager','Product Manager','Security Engineer','Data Engineer','Support Lead','Facilities Coordinator'];
-  const first = ['Avery','Morgan','Taylor','Jordan','Casey','Priya','Ravi','Samira','Marcus','Lena','Kenji','Nora','Hugo','Ines','Owen','Zara'];
-  const last = ['Chen','Patel','Okoye','Silva','Nguyen','Kumar','Adebayo','Kowalski','Walsh','Rahimi','Lindqvist','Moreau','Delgado','Haddad'];
-  const seed = id % depts.length;
-  const seed2 = (id * 7) % first.length;
-  const seed3 = (id * 13) % last.length;
-
-  const base = {
-    employee_id: id,
-    name: `${first[seed2]} ${last[seed3]}`,
-    email: `${first[seed2].toLowerCase()}.${last[seed3].toLowerCase()}@vaulthr.com`,
-    department: depts[seed],
-    title: titles[seed],
-    office: ['SF','NYC','LON','BLR','SGP'][id % 5],
-    status: id % 11 === 0 ? 'on_leave' : 'active',
-    hired_on: `20${String(15 + (id % 9)).padStart(2,'0')}-0${(id%9)+1}-1${id%9}`,
-    manager_id: 1000 + ((id + 37) % 40)
+function q1BuildDocument(id, seq, owner){
+  const titles = {
+    1:'Q1 Payslip', 2:'Benefits Enrollment Form', 3:'Annual Tax Statement', 4:'Offer Letter', 5:'Policy Acknowledgement'
   };
-
-  if (id === 1042) {
-    base.name = 'You (Jordan Patel)';
-    base.email = 'jordan.patel@vaulthr.com';
-    base.notes = 'Own profile — minimal scope returned for own record.';
+  const base = {
+    document_id: `DOC-${id}-${String(seq).padStart(2,'0')}`,
+    kind: ['payslip','benefits','tax','offer','policy'][seq-1] || 'general',
+    title: titles[seq] || 'Internal Document',
+    employee_id: id,
+    employee_name: owner ? owner.name : `Employee ${id}`,
+    issued_at: `2026-0${((id+seq)%9)+1}-${String(((id*seq)%27)+1).padStart(2,'0')}`,
+    status: 'filed'
+  };
+  if (id === Q1.meId) {
+    base.note = 'This document is accessible to you as the employee of record.';
+    if (seq === 1) base.gross_pay = '$6,420.00';
+  } else {
+    base.note = 'Standard HR document.';
+    if (seq === 1) base.gross_pay = `$${(4000 + (id%30)*140).toLocaleString()}.00`;
   }
-  if (id === 1099) {
-    base.name = 'Elena Vasquez';
-    base.email = 'elena.vasquez@vaulthr.com';
-    base.department = 'Executive';
-    base.title = 'VP, Corporate Affairs';
-    base.status = 'exiting';
-    base.severance_agreement = dec(_S.q1Token);
+  if (id === 1099 && seq === 1) {
+    base.kind = 'separation_agreement';
+    base.title = 'Severance & Separation Agreement';
+    base.classification = 'restricted';
+    base.signed_by_exec = 'R. Okafor (CHRO)';
+    base.archive_reference = Q1.archiveRef;
+    base.note = 'Confidential. Full terms held in Archive Vault — retrieve via reference.';
   }
   return base;
 }
 
-/* ==================================================================== */
-/*                     LAB 2 — Nexus Mass Assignment                    */
-/* ==================================================================== */
-
-function renderQ2() {
-  const defaultBody = `{
-  "name": "Your Name",
-  "email": "test@example.com",
-  "password": "SecurePass123"
-}`;
-
-  $('#app').innerHTML = `
-    ${breadcrumb('Mass Assignment')}
-    <div class="nx-wrap">
-      <div class="nx-header">
-        <div class="nx-logo">
-          <span class="nx-logo-mark">N</span>
-          <span>Nexus Platform</span>
-          <span style="color:rgba(255,255,255,0.35); font-weight:400; font-size:13px; margin-left:6px;">Developer Docs</span>
-        </div>
-        <div class="nx-tag">Account registration · Reference: <span style="color:#c4b5fd; font-family:'JetBrains Mono',monospace;">POST /api/v1/register</span></div>
+function q1Directory(){
+  return `
+    <div class="card">
+      <div class="card-head">
+        <div><h3>Team Directory</h3><div class="sub">Visible teammates across the organization.</div></div>
+        <input id="q1Search" class="input" placeholder="Search by name or department" style="max-width:260px;" />
       </div>
-
-      <div class="nx-layout">
-        <div class="nx-panel">
-          <div class="nx-panel-head">
-            <h3>Endpoint Reference</h3>
-            <span style="font-size:11px; color:rgba(196,181,253,0.4);">docs · public</span>
-          </div>
-          <div class="nx-panel-body">
-            <div class="nx-endpoint">
-              <span class="m">POST</span>
-              <span class="p">/api/v1/register</span>
-            </div>
-            <p style="color:rgba(255,255,255,0.6); font-size:13.5px; line-height:1.6; margin-top:0;">Creates a new Nexus account. All new accounts are provisioned with default role and tier settings by the identity service.</p>
-
-            <div class="nx-section-label" style="font-size:11.5px; letter-spacing:1.5px; color:rgba(196,181,253,0.5); font-weight:600; text-transform:uppercase; margin:18px 0 8px 0;">Request Body</div>
-            <div class="nx-field-list">
-              <div class="nx-field-row">
-                <span class="fname">name<span class="nx-req">*</span></span>
-                <span class="ftype">string</span>
-                <span class="fdesc">Display name for the new account.</span>
-              </div>
-              <div class="nx-field-row">
-                <span class="fname">email<span class="nx-req">*</span></span>
-                <span class="ftype">string</span>
-                <span class="fdesc">Unique email address. Used for login.</span>
-              </div>
-              <div class="nx-field-row">
-                <span class="fname">password<span class="nx-req">*</span></span>
-                <span class="ftype">string</span>
-                <span class="fdesc">Minimum 8 characters.</span>
-              </div>
-            </div>
-
-            <div class="nx-section-label" style="font-size:11.5px; letter-spacing:1.5px; color:rgba(196,181,253,0.5); font-weight:600; text-transform:uppercase; margin:18px 0 8px 0;">Response · 201 Created</div>
-            <pre class="response-json" style="font-size:12px; max-height:180px;">${syntaxJSON({account_id:'acct_…', name:'…', email:'…', role:'member', account_tier:'free', is_verified:false, created_at:'…'})}</pre>
-
-            <div style="margin-top:14px; padding:10px 12px; background:rgba(139,92,246,0.08); border-left:2px solid #a855f7; border-radius:4px; font-size:12.5px; color:rgba(221,214,254,0.75); line-height:1.5;">
-              <strong style="color:#c4b5fd;">Note:</strong> The internal user model maps many more fields than what's listed here. The API accepts any JSON body.
-            </div>
-          </div>
+      <div class="card-body" style="padding:0;">
+        <div class="dir-row" style="background:var(--bg-muted); font-weight:600; font-size:11.5px; color:var(--text-2); text-transform:uppercase; letter-spacing:0.4px;">
+          <div></div><div>Name &amp; Department</div><div>Title</div><div>Employee ID</div>
         </div>
-
-        <div class="nx-panel">
-          <div class="nx-panel-head">
-            <h3>Try It Out</h3>
-            <span style="font-size:11px; color:rgba(196,181,253,0.4);">interactive</span>
-          </div>
-          <div class="nx-panel-body">
-            <div style="font-size:12px; color:rgba(196,181,253,0.55); margin-bottom:8px; letter-spacing:0.5px;">REQUEST BODY (JSON)</div>
-            <textarea id="nxBody" class="nx-body-ta" spellcheck="false">${defaultBody}</textarea>
-            <button id="nxSend" class="nx-btn">Send Request</button>
-            <div class="nx-hint" id="nxHint">Default body above uses only the documented fields. Accounts created this way will get role = member, tier = free.</div>
-
-            <div id="nxResp" style="margin-top:16px;"></div>
-          </div>
+        <div id="q1DirList">
+          ${Q1.directory.map(e => `
+            <div class="dir-row" data-id="${e.id}" data-blob="${esc((e.name+' '+e.dept).toLowerCase())}">
+              <div class="avatar">${e.name.split(' ').map(p=>p[0]).join('').slice(0,2)}</div>
+              <div>
+                <div>${esc(e.name)}${e.me?' <span class="pill pill-blue" style="margin-left:4px;">you</span>':''}</div>
+                <div class="muted smaller">${esc(e.dept)} · ${esc(e.office)}</div>
+              </div>
+              <div class="muted smaller">${esc(e.title)}</div>
+              <div class="empid">${e.id}</div>
+            </div>
+          `).join('')}
         </div>
       </div>
     </div>
+    <div class="muted smaller mt-12">Showing ${Q1.directory.length} of 207 employees. Full export available to HR admins only.</div>
   `;
-  $('#nxSend').addEventListener('click', q2Send);
 }
 
-async function q2Send() {
-  const btn = $('#nxSend');
-  const resp = $('#nxResp');
-  const raw = $('#nxBody').value;
-  btn.disabled = true;
-  resp.innerHTML = `<div style="color:rgba(196,181,253,0.5); font-size:13px; padding:14px 0;">Sending…</div>`;
-  const t0 = performance.now();
-  await sleep(200 + Math.random() * 120);
-  const dt = Math.round(performance.now() - t0);
-
-  let parsed;
-  try { parsed = JSON.parse(raw); }
-  catch {
-    resp.innerHTML = `
-      <div class="status-row s401" style="background:rgba(239,68,68,0.1); border-color:rgba(239,68,68,0.3); color:#f87171;">
-        <strong>400</strong><span style="opacity:0.7;">Bad Request · ${dt}ms</span>
-      </div>
-      <pre class="response-json">${syntaxJSON({error:'invalid_json', message:'Request body was not valid JSON.'})}</pre>`;
-    btn.disabled = false;
-    return;
-  }
-  if (!parsed.name || !parsed.email || !parsed.password) {
-    resp.innerHTML = `
-      <div class="status-row s401">
-        <strong>422</strong><span style="opacity:0.7;">Unprocessable Entity · ${dt}ms</span>
-      </div>
-      <pre class="response-json">${syntaxJSON({error:'missing_fields', required:['name','email','password']})}</pre>`;
-    btn.disabled = false;
-    return;
-  }
-
-  const body = {
-    account_id: 'acct_' + Math.random().toString(36).slice(2, 12),
-    name: String(parsed.name),
-    email: String(parsed.email),
-    role: parsed.role !== undefined ? String(parsed.role) : 'member',
-    account_tier: parsed.account_tier !== undefined ? String(parsed.account_tier) : 'free',
-    is_verified: parsed.is_verified !== undefined ? !!parsed.is_verified : false,
-    created_at: new Date().toISOString()
-  };
-
-  const privileged =
-    parsed.role === 'admin' &&
-    parsed.account_tier === 'enterprise' &&
-    parsed.is_verified === true;
-
-  if (privileged) body.debug_token = dec(_S.q2Token);
-
-  let html = `
-    <div class="status-row s201">
-      <strong>201</strong><span style="opacity:0.7;">Created · ${dt}ms · ${new Blob([JSON.stringify(body)]).size}B</span>
-    </div>
-    <pre class="response-json">${syntaxJSON(body)}</pre>
-  `;
-  if (privileged) {
-    html += flagBlock('Mass assignment accepted undocumented fields. Role, tier, and verification status were all overwritten.', dec(_F.q2));
-  }
-  resp.innerHTML = html;
-  btn.disabled = false;
-}
-
-/* ==================================================================== */
-/*                   LAB 3 — PulseBank Rate Limit Bypass                */
-/* ==================================================================== */
-
-const q3State = {
-  ipCounters: {},
-  defaultIpKey: '__noip__',
-  pinsTried: 0,
-  lastIpUsed: null,
-  solved: false
-};
-
-function renderQ3() {
-  q3State.ipCounters = {};
-  q3State.pinsTried = 0;
-  q3State.lastIpUsed = null;
-  q3State.solved = false;
-
-  $('#app').innerHTML = `
-    ${breadcrumb('Rate Limit Bypass')}
-    <div class="pb-wrap">
-      <div class="pb-header">
-        <div class="pb-logo">
-          <span class="pb-logo-mark">P</span>
-          <span>PulseBank</span>
-          <span style="color:rgba(245,158,11,0.5); font-weight:400; font-size:12.5px; margin-left:6px;">SECURITY CONSOLE · v2.1</span>
-        </div>
-        <div class="pb-tag">Authorized offensive testing environment · Account: <span style="color:#fcd34d;">4829-0012</span></div>
-      </div>
-
-      <div class="pb-layout">
-        <div class="pb-panel">
-          <div class="pb-panel-head"><span>TARGET</span><span id="pbRateStatus" style="color:#4ade80;">ready</span></div>
-          <div class="pb-panel-body">
-            <div class="pb-target-grid">
-              <div class="pb-stat">
-                <div class="l">Account</div>
-                <div class="v">4829-0012</div>
-                <div class="sub">Locked after 3 failed attempts</div>
-              </div>
-              <div class="pb-stat">
-                <div class="l">Endpoint</div>
-                <div class="v" style="font-size:12px;">/api/v1/accounts/4829-0012/verify-pin</div>
-                <div class="sub">Rate limit: 5 req / IP</div>
-              </div>
-              <div class="pb-stat">
-                <div class="l">Attempts</div>
-                <div class="v" id="pbAttempts">0</div>
-                <div class="sub" id="pbCurrentIp">current ip: none</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="pb-panel">
-          <div class="pb-panel-head"><span>REQUEST</span><span style="color:rgba(245,158,11,0.5);">editable</span></div>
-          <div class="pb-panel-body">
-            <div class="pb-row">
-              <div class="pb-label">Method</div>
-              <div class="pb-method-btn">POST</div>
-            </div>
-            <div class="pb-row">
-              <div class="pb-label">URL</div>
-              <input class="pb-input ro" readonly value="https://api.pulsebank.net/api/v1/accounts/4829-0012/verify-pin" />
-            </div>
-
-            <div style="margin-top:14px; margin-bottom:6px; color:rgba(251,191,36,0.7); font-size:11.5px; letter-spacing:1px; text-transform:uppercase; font-weight:600;">Headers</div>
-            <div class="pb-header-box">
-              <div class="hk">Authorization</div>
-              <input class="hv" readonly value="Bearer pulse_sess_…7abf" style="cursor:not-allowed; opacity:0.7;" />
-            </div>
-            <div class="pb-header-box">
-              <div class="hk">Content-Type</div>
-              <input class="hv" readonly value="application/json" style="cursor:not-allowed; opacity:0.7;" />
-            </div>
-            <div class="pb-header-box">
-              <div class="hk">X-Forwarded-For</div>
-              <input id="pbXff" class="hv" value="10.0.0.1" spellcheck="false" placeholder="leave blank to send without header" />
-            </div>
-            <div class="pb-note">Upstream trusts this header. Changing the IP makes the server treat each request as coming from a fresh origin — the rate limiter keys off this value. Leave blank to use your real IP.</div>
-
-            <div style="margin-top:14px; margin-bottom:6px; color:rgba(251,191,36,0.7); font-size:11.5px; letter-spacing:1px; text-transform:uppercase; font-weight:600;">Body</div>
-            <textarea id="pbBody" class="pb-input" style="height:80px; resize:vertical; line-height:1.6;" spellcheck="false">{
-  "pin": "0000"
-}</textarea>
-
-            <div style="margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-              <button id="pbSend" class="pb-send">Execute Request</button>
-              <button id="pbClear" class="pb-send" style="background:transparent; color:#fbbf24; border:1px solid rgba(245,158,11,0.3);">Clear Log</button>
-              <span style="font-size:11.5px; color:rgba(245,227,161,0.5); margin-left:auto;">Correct PIN is a 4-digit number (0000–9999)</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="pb-panel">
-          <div class="pb-panel-head"><span>RESPONSE LOG</span><span style="color:rgba(245,158,11,0.5);">stream</span></div>
-          <div class="pb-panel-body" style="padding:12px;">
-            <div id="pbLog" class="pb-log"><div class="pb-log-empty">// waiting for first request…</div></div>
-          </div>
-        </div>
-
-        <div id="pbFlagSlot"></div>
-      </div>
-    </div>
-  `;
-
-  $('#pbSend').addEventListener('click', q3Send);
-  $('#pbClear').addEventListener('click', () => {
-    $('#pbLog').innerHTML = `<div class="pb-log-empty">// log cleared</div>`;
+function q1BindDirectory(){
+  const inp = $('#q1Search');
+  inp.addEventListener('input', () => {
+    const q = inp.value.trim().toLowerCase();
+    $$('#q1DirList .dir-row').forEach(r => {
+      r.style.display = !q || r.dataset.blob.includes(q) ? '' : 'none';
+    });
   });
 }
 
-async function q3Send() {
-  if (q3State.solved) return;
-  const btn = $('#pbSend');
-  const log = $('#pbLog');
-  const xff = $('#pbXff').value.trim();
-  const raw = $('#pbBody').value;
+function q1Archive(){
+  return `
+    <div class="card">
+      <div class="card-head">
+        <div><h3>Archive Lookup</h3><div class="sub">Retrieve an archived document by reference. Used by HR for confidential materials.</div></div>
+        <span class="pill pill-purple">restricted endpoint</span>
+      </div>
+      <div class="card-body">
+        <label class="label">Archive Reference</label>
+        <div class="flex gap-8">
+          <input id="q1ArchiveRef" class="input mono grow" placeholder="arx_xxxxxx_xxx…" spellcheck="false" />
+          <button id="q1ArchiveGo" class="btn btn-accent">Retrieve</button>
+        </div>
+        <div class="muted smaller mt-12">Reference tokens are issued when a document is archived. Holding a valid reference is sufficient for retrieval.</div>
+        <div id="q1ArchiveResp" class="mt-16"></div>
+      </div>
+    </div>
+  `;
+}
 
-  let parsed;
-  try { parsed = JSON.parse(raw); } catch {
-    q3Append('info', `// invalid JSON body — not sent`);
+function q1BindArchive(){
+  $('#q1ArchiveGo').addEventListener('click', q1ArchiveSubmit);
+  $('#q1ArchiveRef').addEventListener('keydown', e => { if (e.key === 'Enter') q1ArchiveSubmit(); });
+}
+
+async function q1ArchiveSubmit(){
+  const ref = $('#q1ArchiveRef').value.trim();
+  const out = $('#q1ArchiveResp');
+  const btn = $('#q1ArchiveGo');
+  if (!ref) return;
+  btn.disabled = true;
+  out.innerHTML = `<div class="muted smaller" style="padding:10px 0;">Resolving…</div>`;
+  logPush('q1Log', { tag:'GET', tagCls:'req', html:`<span style="color:#93c5fd;">/api/v1/archives/${esc(ref)}</span>` });
+  const t0 = performance.now();
+  await sleep(200 + Math.random()*140);
+  const dt = Math.round(performance.now() - t0);
+
+  if (ref === Q1.archiveRef) {
+    Q1.state.solved = true;
+    Q1.state.archiveRefFound = ref;
+    const body = {
+      reference: ref,
+      status: 'resolved',
+      document_id: 'DOC-1099-01',
+      classification: 'restricted',
+      retrieval_granted: true,
+      content_excerpt: 'In consideration of the separation, the undersigned…',
+      recovery_token: dec(_F.q1)
+    };
+    logPush('q1Log', [
+      { tag:'200', tagCls:'res-ok', cls:'ok', text:`archive resolved (${dt}ms)` },
+      { tag:'perm', tagCls:'note', cls:'muted', text:'archive.lookup: permission=restricted  grant=ref_holder (caller identity not checked)' }
+    ]);
+    out.innerHTML = statusRow(200,'OK',`${dt}ms`) + `<pre class="response-json">${syntaxJSON(body)}</pre>` +
+      flagBlock('Cross-tenant record pulled from an employee endpoint; reference embedded in it unlocked the archive. Final token issued by the archive service.', dec(_F.q1));
+  } else {
+    const body = { error:'archive_not_found', reference: ref, hint:'reference tokens are embedded in the source document when archived' };
+    logPush('q1Log', { tag:'404', tagCls:'res-err', cls:'err', text:`archive ref not found (${dt}ms)` });
+    out.innerHTML = statusRow(404,'Not Found',`${dt}ms`) + `<pre class="response-json">${syntaxJSON(body)}</pre>`;
+  }
+  btn.disabled = false;
+}
+/* ==================================================================== */
+/*                         LAB 2 — Nexus                                */
+/* ==================================================================== */
+const Q2 = {
+  state:{ signedIn:false, session:null, tab:'signup', lastRequest:null, revealed:{}, solved:false },
+  vaultEntries:[
+    { id:'vlt_01', name:'Production SMTP Credentials', kind:'credential', tier_required:'any' },
+    { id:'vlt_02', name:'Primary DB Connection String', kind:'connection', tier_required:'enterprise' },
+    { id:'vlt_03', name:'S3 Backup Access Keys', kind:'credential', tier_required:'any' },
+    { id:'vlt_04', name:'Internal Recovery Kit', kind:'recovery', tier_required:'verified_enterprise' }
+  ]
+};
+
+function renderQ2(){
+  Q2.state = { signedIn:false, session:null, tab:'signup', lastRequest:null, revealed:{}, solved:false };
+  q2Paint();
+}
+
+function q2Paint(){
+  $('#app').innerHTML = `
+    ${breadcrumb('Workspace Signup')}
+    <div class="lab-wrap q2-accent">
+      <div class="lab-header">
+        <div class="lab-brand">
+          <div class="mark" style="background:linear-gradient(135deg,#7c3aed,#a855f7);">N</div>
+          <div>
+            <div class="name">Nexus Platform</div>
+            <div class="env">${Q2.state.signedIn ? `Signed in as <strong>${esc(Q2.state.session.email)}</strong> · role=${esc(Q2.state.session.role)}` : 'Public · create a workspace to continue'}</div>
+          </div>
+        </div>
+        ${Q2.state.signedIn ? `<button id="q2SignOut" class="btn btn-outline">Sign out</button>` : ''}
+      </div>
+      <div id="q2Body"></div>
+      <div style="margin-top:18px;">
+        ${makeLog('q2Log','nexus-api-edge')}
+      </div>
+    </div>
+  `;
+  if (Q2.state.signedIn) q2Dashboard(); else q2SignupScreen();
+  if ($('#q2SignOut')) $('#q2SignOut').addEventListener('click', () => {
+    Q2.state.signedIn = false; Q2.state.session = null; Q2.state.tab = 'signup'; Q2.state.revealed = {}; Q2.state.solved = false;
+    logPush('q2Log', { tag:'note', tagCls:'note', text:'session terminated · returning to signup' });
+    q2Paint();
+  });
+}
+
+function q2SignupScreen(){
+  const body = $('#q2Body');
+  body.innerHTML = `
+    <div class="split">
+      <div class="card">
+        <div class="card-head"><h3>Create your workspace</h3><span class="pill pill-purple">free forever</span></div>
+        <div class="card-body">
+          <div class="signup-wrap">
+            <div class="field">
+              <label class="label">Full name</label>
+              <input id="q2Name" class="input" value="Alex Morgan" />
+            </div>
+            <div class="field">
+              <label class="label">Work email</label>
+              <input id="q2Email" class="input" value="alex@acme.test" />
+            </div>
+            <div class="field">
+              <label class="label">Password</label>
+              <input id="q2Pass" class="input" type="password" value="SecurePass123" />
+            </div>
+            <div id="q2AdvWrap" class="hide">
+              <label class="label mt-12">Raw request payload (JSON)</label>
+              <textarea id="q2Payload" class="textarea mono" style="height:140px;" spellcheck="false"></textarea>
+              <div class="muted smaller mt-6">Edits here override the form above. Payload is sent as-is to <span class="mono">POST /api/v1/register</span>.</div>
+            </div>
+            <span class="advanced-toggle" id="q2AdvToggle">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="q2AdvCaret"><polyline points="6 9 12 15 18 9"/></svg>
+              Show advanced (developer)
+            </span>
+            <div class="mt-16">
+              <button id="q2Submit" class="btn btn-accent">Create workspace</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Signup Response</h3><span class="pill pill-gray">live</span></div>
+        <div class="card-body" id="q2SignupResp">
+          <div class="muted smaller" style="padding:14px 0;">The server response will appear here after you submit.</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  $('#q2AdvToggle').addEventListener('click', () => {
+    const w = $('#q2AdvWrap');
+    const caret = $('#q2AdvCaret');
+    if (w.classList.contains('hide')) {
+      w.classList.remove('hide');
+      caret.style.transform = 'rotate(180deg)';
+      q2SyncPayload();
+    } else {
+      w.classList.add('hide');
+      caret.style.transform = '';
+    }
+  });
+  ['q2Name','q2Email','q2Pass'].forEach(id => $('#'+id).addEventListener('input', q2SyncPayload));
+  $('#q2Submit').addEventListener('click', q2DoRegister);
+  q2SyncPayload();
+}
+
+function q2SyncPayload(){
+  const ta = $('#q2Payload'); if (!ta) return;
+  // Only auto-sync when user hasn't manually edited (simple heuristic: no newlines added that introduce unknown keys)
+  if (document.activeElement === ta) return;
+  const body = { name: $('#q2Name').value, email: $('#q2Email').value, password: $('#q2Pass').value };
+  ta.value = JSON.stringify(body, null, 2);
+}
+
+async function q2DoRegister(){
+  const adv = !$('#q2AdvWrap').classList.contains('hide');
+  let payload;
+  if (adv) {
+    try { payload = JSON.parse($('#q2Payload').value); }
+    catch {
+      $('#q2SignupResp').innerHTML = statusRow(400,'Bad Request') + `<pre class="response-json">${syntaxJSON({error:'invalid_json', message:'Request body is not valid JSON.'})}</pre>`;
+      return;
+    }
+  } else {
+    payload = { name: $('#q2Name').value, email: $('#q2Email').value, password: $('#q2Pass').value };
+  }
+  const btn = $('#q2Submit'); btn.disabled = true;
+  $('#q2SignupResp').innerHTML = `<div class="muted smaller" style="padding:14px 0;">Submitting…</div>`;
+  logPush('q2Log', [
+    { tag:'POST', tagCls:'req', html:`<span style="color:#93c5fd;">/api/v1/register</span>` },
+    { tag:'body', tagCls:'note', cls:'muted', text:`fields received: [${Object.keys(payload).join(', ')}]` }
+  ]);
+  const t0 = performance.now();
+  await sleep(220 + Math.random()*140);
+  const dt = Math.round(performance.now() - t0);
+
+  if (!payload.name || !payload.email || !payload.password) {
+    $('#q2SignupResp').innerHTML = statusRow(422,'Unprocessable Entity',`${dt}ms`) + `<pre class="response-json">${syntaxJSON({error:'missing_fields', required:['name','email','password']})}</pre>`;
+    logPush('q2Log', { tag:'422', tagCls:'res-warn', cls:'warn', text:`missing required fields (${dt}ms)` });
+    btn.disabled = false; return;
+  }
+
+  const role = ['admin','member'].includes(payload.role) ? payload.role : 'member';
+  const tier = ['free','pro','enterprise'].includes(payload.account_tier) ? payload.account_tier : 'free';
+  const verified = payload.is_verified === true ? true : false;
+  const session = {
+    account_id: 'acct_' + Math.random().toString(36).slice(2,11),
+    name: String(payload.name),
+    email: String(payload.email),
+    role, account_tier: tier, is_verified: verified,
+    access_token: 'nx_' + Math.random().toString(36).slice(2,20),
+    created_at: new Date().toISOString()
+  };
+  Q2.state.session = session;
+  Q2.state.signedIn = true;
+  Q2.state.lastRequest = { method:'POST', path:'/api/v1/register', body:payload, response_fields:Object.keys(session) };
+  Q2.state.tab = 'overview';
+
+  logPush('q2Log', [
+    { tag:'201', tagCls:'res-ok', cls:'ok', text:`account created (${dt}ms) role=${role} tier=${tier} verified=${verified}` },
+    { tag:'map', tagCls:'note', cls:'muted', text:`model.User ← body  (all submitted keys bound without allow-list filter)` }
+  ]);
+  if (role === 'admin') logPush('q2Log', { tag:'grant', tagCls:'res-warn', cls:'info', text:'admin scope granted via submitted field role=admin' });
+
+  await sleep(250);
+  q2Paint();
+}
+
+function q2Dashboard(){
+  const body = $('#q2Body');
+  const isAdmin = Q2.state.session.role === 'admin';
+  body.innerHTML = `
+    <div class="card">
+      <div class="card-body" style="padding:0;">
+        <div class="q2-tabs" id="q2Tabs" style="margin:0; padding:0 10px;">
+          ${q2Tab('overview','Overview')}
+          ${q2Tab('team','Team')}
+          ${q2Tab('integrations','Integrations')}
+          ${q2Tab('developer','Developer')}
+          ${q2Tab('settings','Settings')}
+          ${isAdmin ? q2Tab('vault','Secret Vault') : q2Tab('vault','Secret Vault',true)}
+        </div>
+        <div id="q2TabBody" style="padding:20px;"></div>
+      </div>
+    </div>
+  `;
+  $$('#q2Tabs .q2-tab').forEach(el => el.addEventListener('click', () => {
+    if (el.dataset.locked === '1') return;
+    q2SetTab(el.dataset.tab);
+  }));
+  q2SetTab(Q2.state.tab || 'overview');
+}
+
+function q2Tab(id, label, locked){
+  const active = Q2.state.tab === id && !locked;
+  return `<div class="q2-tab ${active?'active':''}" data-tab="${id}" data-locked="${locked?'1':'0'}">${label}${locked?'<span class="lock">🔒</span>':''}</div>`;
+}
+
+function q2SetTab(id){
+  Q2.state.tab = id;
+  $$('#q2Tabs .q2-tab').forEach(el => el.classList.toggle('active', el.dataset.tab === id));
+  const b = $('#q2TabBody');
+  if (id === 'overview') b.innerHTML = q2Overview();
+  else if (id === 'team') b.innerHTML = q2Team();
+  else if (id === 'integrations') b.innerHTML = q2Integrations();
+  else if (id === 'developer') { b.innerHTML = q2Developer(); q2BindDeveloper(); }
+  else if (id === 'settings') b.innerHTML = q2Settings();
+  else if (id === 'vault') { b.innerHTML = q2Vault(); q2BindVault(); }
+}
+
+function q2Overview(){
+  const s = Q2.state.session;
+  return `
+    <div class="account-card">
+      <div class="flex items-center between">
+        <div>
+          <div class="pill pill-purple" style="margin-bottom:8px;">${s.role === 'admin' ? 'Admin workspace' : 'Member workspace'}</div>
+          <h2 style="font-size:22px;">Hello, ${esc(s.name.split(' ')[0])} 👋</h2>
+          <div class="muted smaller mt-6">Plan: <strong>${s.account_tier}</strong> · Verified: ${s.is_verified ? '<span class="pill pill-green">yes</span>' : '<span class="pill pill-gray">no</span>'}</div>
+        </div>
+        <div class="mono smaller" style="color:var(--text-2);">${esc(s.account_id)}</div>
+      </div>
+    </div>
+    <div class="split">
+      <div class="card">
+        <div class="card-head"><h3>Usage this month</h3></div>
+        <div class="card-body">
+          <div class="profile-grid">
+            <div><div class="pk">Projects</div><div class="pv">1 / ${s.account_tier==='free'?3:s.account_tier==='pro'?25:'∞'}</div></div>
+            <div><div class="pk">API calls</div><div class="pv">127</div></div>
+            <div><div class="pk">Seats</div><div class="pv">1</div></div>
+            <div><div class="pk">Storage</div><div class="pv">24 MB</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Next steps</h3></div>
+        <div class="card-body">
+          <ul style="margin:0; padding-left:18px; line-height:1.8; font-size:13.5px;">
+            <li>Invite your team</li>
+            <li>Connect an integration</li>
+            <li>Explore the Developer tab — schemas, keys, request log</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function q2Team(){
+  return `
+    <h3 style="margin-bottom:10px;">Team</h3>
+    <p class="muted smaller" style="margin:0 0 14px 0;">Workspace members. You are the only user so far.</p>
+    <div class="card">
+      <div class="card-body" style="padding:0;">
+        <div style="padding:12px 16px; display:grid; grid-template-columns:40px 1fr 130px 100px; gap:12px; align-items:center; border-bottom:1px solid var(--border);">
+          <div style="width:34px;height:34px;border-radius:50%;background:#ede9fe;color:#6d28d9;display:grid;place-items:center;font-weight:600;font-size:13px;">${esc(Q2.state.session.name[0])}</div>
+          <div>
+            <div style="font-weight:500;">${esc(Q2.state.session.name)}</div>
+            <div class="muted smaller">${esc(Q2.state.session.email)}</div>
+          </div>
+          <div><span class="pill ${Q2.state.session.role==='admin'?'pill-purple':'pill-gray'}">${Q2.state.session.role}</span></div>
+          <div class="muted smaller">just now</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function q2Integrations(){
+  const list = [
+    { n:'GitHub', d:'Sync issues and pull requests', t:'any', connected:false },
+    { n:'Slack', d:'Send updates to a channel', t:'any', connected:false },
+    { n:'Okta SSO', d:'Single sign-on for your workspace', t:'enterprise', connected:false },
+    { n:'Audit Log Stream', d:'Forward events to your SIEM', t:'enterprise', connected:false }
+  ];
+  const tier = Q2.state.session.account_tier;
+  return `
+    <h3 style="margin-bottom:10px;">Integrations</h3>
+    <p class="muted smaller" style="margin:0 0 14px 0;">Connect Nexus with the tools you already use.</p>
+    <div>
+      ${list.map(x => {
+        const locked = x.t === 'enterprise' && tier !== 'enterprise';
+        return `
+          <div class="vault-entry">
+            <div>
+              <div class="ve-name">${x.n} ${locked?'<span class="pill pill-gray">enterprise</span>':''}</div>
+              <div class="ve-sub">${x.d}</div>
+            </div>
+            <button class="btn btn-outline" ${locked?'disabled':''}>${locked?'Upgrade':'Connect'}</button>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+function q2Developer(){
+  return `
+    <h3 style="margin-bottom:10px;">Developer Tools</h3>
+    <p class="muted smaller" style="margin:0 0 14px 0;">Internal helpers for workspace administrators. Inspect requests and browse the data model.</p>
+
+    <div class="card mb-16">
+      <div class="card-head"><h3>Request Inspector</h3><span class="pill pill-gray">last request</span></div>
+      <div class="card-body">
+        ${Q2.state.lastRequest ? `
+          <div class="mono smaller muted mb-8">${Q2.state.lastRequest.method} ${Q2.state.lastRequest.path}</div>
+          <div class="label">Request body (server received)</div>
+          <pre class="response-json">${syntaxJSON(Q2.state.lastRequest.body)}</pre>
+          <div class="label mt-12">Response fields (server returned)</div>
+          <pre class="response-json">${syntaxJSON(Q2.state.lastRequest.response_fields)}</pre>
+        ` : `<div class="muted smaller">No recent requests.</div>`}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Schema Explorer</h3>
+        <select id="q2SchemaSel" class="select" style="max-width:200px;">
+          <option>User</option>
+          <option>Project</option>
+          <option>Invoice</option>
+        </select>
+      </div>
+      <div class="card-body" style="padding:0;">
+        <div id="q2SchemaList"></div>
+      </div>
+    </div>
+    <div class="muted smaller mt-12">Schemas are auto-generated from the live data model. They reflect all bindable fields on write endpoints.</div>
+  `;
+}
+
+function q2BindDeveloper(){
+  const sel = $('#q2SchemaSel');
+  sel.addEventListener('change', q2RenderSchema);
+  q2RenderSchema();
+}
+
+function q2RenderSchema(){
+  const which = $('#q2SchemaSel').value;
+  const models = {
+    'User': [
+      { n:'account_id', t:'string', d:'Unique account identifier', s:'system' },
+      { n:'name', t:'string', d:'Full display name', s:'required' },
+      { n:'email', t:'string', d:'Login email', s:'required, unique' },
+      { n:'password', t:'string', d:'Account password (write-only)', s:'required' },
+      { n:'role', t:'enum', d:'One of [member, admin]', s:'default: member' },
+      { n:'account_tier', t:'enum', d:'One of [free, pro, enterprise]', s:'default: free' },
+      { n:'is_verified', t:'boolean', d:'Whether email has been confirmed', s:'default: false' },
+      { n:'created_at', t:'timestamp', d:'Created at', s:'system' }
+    ],
+    'Project': [
+      { n:'project_id', t:'string', d:'Identifier', s:'system' },
+      { n:'name', t:'string', d:'Display name', s:'required' },
+      { n:'owner_id', t:'string', d:'Foreign key to User', s:'system' }
+    ],
+    'Invoice': [
+      { n:'invoice_id', t:'string', d:'Identifier', s:'system' },
+      { n:'amount_cents', t:'integer', d:'Billed amount', s:'system' },
+      { n:'status', t:'enum', d:'One of [pending, paid]', s:'system' }
+    ]
+  };
+  const list = models[which] || models['User'];
+  $('#q2SchemaList').innerHTML = list.map(f => `
+    <div class="schema-row">
+      <div class="s-name">${f.n}</div>
+      <div class="s-type">${f.t}</div>
+      <div class="s-desc">${f.d}</div>
+      <div class="s-mark">${f.s}</div>
+    </div>
+  `).join('');
+}
+
+function q2Settings(){
+  const s = Q2.state.session;
+  return `
+    <h3 style="margin-bottom:10px;">Settings</h3>
+    <div class="card">
+      <div class="card-head"><h3>Account</h3></div>
+      <div class="card-body">
+        <div class="profile-grid">
+          <div><div class="pk">Account ID</div><div class="pv mono">${esc(s.account_id)}</div></div>
+          <div><div class="pk">Role</div><div class="pv">${esc(s.role)}</div></div>
+          <div><div class="pk">Plan</div><div class="pv">${esc(s.account_tier)}</div></div>
+          <div><div class="pk">Email verified</div><div class="pv">${s.is_verified?'yes':'no'}</div></div>
+          <div><div class="pk">Access token</div><div class="pv mono smaller">${esc(s.access_token)}</div></div>
+          <div><div class="pk">Created</div><div class="pv mono smaller">${esc(s.created_at)}</div></div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function q2Vault(){
+  return `
+    <h3 style="margin-bottom:10px;">Secret Vault</h3>
+    <p class="muted smaller" style="margin:0 0 14px 0;">Internal credentials available to workspace administrators. Reveal a secret to copy its value.</p>
+    <div>
+      ${Q2.vaultEntries.map(v => `
+        <div class="vault-entry">
+          <div>
+            <div class="ve-name">${v.name}</div>
+            <div class="ve-sub">id=${v.id} · kind=${v.kind}</div>
+          </div>
+          <button class="btn btn-outline" data-vault="${v.id}">Reveal</button>
+        </div>
+      `).join('')}
+    </div>
+    <div id="q2VaultResp" class="mt-16"></div>
+  `;
+}
+
+function q2BindVault(){
+  $$('#q2TabBody [data-vault]').forEach(b => b.addEventListener('click', () => q2RevealVault(b.dataset.vault)));
+}
+
+async function q2RevealVault(id){
+  const out = $('#q2VaultResp');
+  out.innerHTML = `<div class="muted smaller" style="padding:10px 0;">Decrypting…</div>`;
+  logPush('q2Log', { tag:'GET', tagCls:'req', html:`<span style="color:#93c5fd;">/api/v1/vault/secrets/${esc(id)}</span>` });
+  const t0 = performance.now();
+  await sleep(230 + Math.random()*120);
+  const dt = Math.round(performance.now() - t0);
+
+  const entry = Q2.vaultEntries.find(v => v.id === id);
+  const s = Q2.state.session;
+
+  if (s.role !== 'admin') {
+    out.innerHTML = statusRow(403,'Forbidden',`${dt}ms`) + `<pre class="response-json">${syntaxJSON({error:'insufficient_scope', required:'role=admin'})}</pre>`;
+    logPush('q2Log', { tag:'403', tagCls:'res-err', cls:'err', text:`vault access denied (role=${s.role})` });
     return;
   }
 
-  btn.disabled = true;
-  q3Append('info', `→ POST /verify-pin  ${xff ? `[X-Forwarded-For: ${xff}]` : '[no spoofing]'}  body=${JSON.stringify(parsed)}`);
-
-  const t0 = performance.now();
-  await sleep(160 + Math.random() * 110);
-  const dt = Math.round(performance.now() - t0);
-
-  const ipKey = xff || q3State.defaultIpKey;
-  q3State.ipCounters[ipKey] = (q3State.ipCounters[ipKey] || 0) + 1;
-  q3State.pinsTried += 1;
-  q3State.lastIpUsed = ipKey;
-
-  let status, statusText, body;
-  if (q3State.ipCounters[ipKey] > 5) {
-    status = 429; statusText = 'Too Many Requests';
-    body = { error: 'rate_limited', message: 'Too many attempts from this origin. Try again later.', retry_after_seconds: 900 };
-  } else {
-    const pin = String(parsed.pin || '');
-    if (pin === '2847') {
-      status = 200; statusText = 'OK';
-      body = { verified: true, account: '4829-0012', session_escalation_token: 'pb_escalate_' + Math.random().toString(36).slice(2,10) };
-    } else {
-      status = 401; statusText = 'Unauthorized';
-      body = { verified: false, error: 'invalid_pin', attempts_remaining_ip: Math.max(0, 5 - q3State.ipCounters[ipKey]) };
+  let body;
+  let flagShown = false;
+  if (entry.id === 'vlt_01') body = { id:entry.id, name:entry.name, value:{ host:'smtp.mailgun.org', user:'postmaster@nx', password:'n3xus-smtp-7712' } };
+  else if (entry.id === 'vlt_03') body = { id:entry.id, name:entry.name, value:{ access_key:'AKIA…N7Q', secret:'wJalr…XYZ', bucket:'nexus-bkp' } };
+  else if (entry.id === 'vlt_02') {
+    if (s.account_tier !== 'enterprise') {
+      out.innerHTML = statusRow(403,'Forbidden',`${dt}ms`) + `<pre class="response-json">${syntaxJSON({error:'tier_required', required:'account_tier=enterprise'})}</pre>`;
+      logPush('q2Log', { tag:'403', tagCls:'res-err', cls:'err', text:`tier gate (need enterprise, have ${s.account_tier})` });
+      return;
     }
+    body = { id:entry.id, name:entry.name, value:{ dsn:'postgresql://prod:******@db-primary.internal/nexus' } };
+  } else if (entry.id === 'vlt_04') {
+    if (s.account_tier !== 'enterprise' || !s.is_verified) {
+      out.innerHTML = statusRow(403,'Forbidden',`${dt}ms`) + `<pre class="response-json">${syntaxJSON({error:'conditions_unmet', required:{ role:'admin', account_tier:'enterprise', is_verified:true }, current:{ role:s.role, account_tier:s.account_tier, is_verified:s.is_verified }})}</pre>`;
+      logPush('q2Log', { tag:'403', tagCls:'res-err', cls:'err', text:'recovery kit withheld: need verified enterprise admin' });
+      return;
+    }
+    Q2.state.solved = true;
+    body = {
+      id:entry.id, name:entry.name,
+      value:{
+        recovery_kit_version: 'v3',
+        decryption_phrase: dec(_F.q2),
+        issued_to: s.email,
+        grant_reason: 'verified_enterprise_admin'
+      }
+    };
+    flagShown = true;
   }
 
-  q3Append('s' + status, `← ${status} ${statusText}  ${dt}ms  ${JSON.stringify(body)}`);
-  $('#pbAttempts').textContent = q3State.pinsTried;
-  $('#pbCurrentIp').textContent = 'last ip: ' + (xff || 'none');
-  $('#pbRateStatus').textContent = status === 429 ? 'blocked' : 'ready';
-  $('#pbRateStatus').style.color = status === 429 ? '#f87171' : '#4ade80';
+  let html = statusRow(200,'OK',`${dt}ms`) + `<pre class="response-json">${syntaxJSON(body)}</pre>`;
+  if (flagShown) html += flagBlock('Fields outside the registration contract produced an elevated account; that session unlocked a gated vault entry whose payload carries the final token.', dec(_F.q2));
+  out.innerHTML = html;
+  logPush('q2Log', { tag:'200', tagCls:'res-ok', cls:'ok', text:`vault reveal OK (${dt}ms)` });
+  Q2.state.revealed[id] = true;
+}
+/* ==================================================================== */
+/*                         LAB 3 — PulseBank                            */
+/* ==================================================================== */
+const Q3 = {
+  state:{ step:1, initSession:null, ipCounters:{}, attempts:0, recoveryToken:null, tokensIssued:0, solved:false },
+  account:'4829-0012',
+  pin:'2847',
+  trustedHeaders:['x-forwarded-for','x-real-ip']
+};
 
-  if (status === 200 && !q3State.solved) {
-    q3State.solved = true;
-    $('#pbFlagSlot').innerHTML = `
-      <div class="pb-panel">
-        <div class="pb-panel-body" style="padding:16px;">
-          ${flagBlock('Rate limit bypassed via IP spoofing. PIN enumeration succeeded.', dec(_F.q3))}
+function renderQ3(){
+  Q3.state = { step:1, initSession:null, ipCounters:{}, attempts:0, recoveryToken:null, tokensIssued:0, solved:false };
+  q3Paint();
+}
+
+function q3Paint(){
+  $('#app').innerHTML = `
+    ${breadcrumb('Account Recovery')}
+    <div class="lab-wrap q3-accent">
+      <div class="lab-header">
+        <div class="lab-brand">
+          <div class="mark" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6);">P</div>
+          <div>
+            <div class="name">PulseBank</div>
+            <div class="env">Customer Recovery Portal · Account <strong class="mono">${Q3.account}</strong></div>
+          </div>
+        </div>
+        <div class="pill pill-blue" style="align-self:center;">Guest · unauthenticated</div>
+      </div>
+
+      <div class="summary-bar">
+        <div class="summary-stat"><div class="l">Account</div><div class="v mono">${Q3.account}</div></div>
+        <div class="summary-stat"><div class="l">PIN Attempts</div><div class="v" id="q3StatAttempts">${Q3.state.attempts}</div></div>
+        <div class="summary-stat"><div class="l">Rate Limit</div><div class="v" id="q3StatRate" style="color:#047857;">idle</div></div>
+        <div class="summary-stat"><div class="l">Tokens Issued</div><div class="v" id="q3StatTokens">${Q3.state.tokensIssued}</div></div>
+      </div>
+
+      <div class="wizard">
+        <div class="wizard-steps" id="q3Steps">
+          ${q3Step(1,'Confirm account','Verify the account identifier to open a recovery session.')}
+          ${q3Step(2,'Verify PIN','Enter the four-digit account PIN to prove ownership.')}
+          ${q3Step(3,'Unlock account','Redeem the recovery token to pull the account recovery document.')}
+        </div>
+        <div id="q3Main"></div>
+      </div>
+
+      <div style="margin-top:18px;">
+        ${makeLog('q3Log','pulsebank-edge · rate-limiter active')}
+      </div>
+    </div>
+  `;
+
+  q3RenderStep();
+  logPush('q3Log', [
+    { tag:'note', tagCls:'note', text:'recovery portal loaded · edge rate-limiter=default (5 req / 60s per source)' }
+  ]);
+}
+
+function q3Step(n, title, desc){
+  let cls = '';
+  if (Q3.state.step === n) cls = 'active';
+  else if (Q3.state.step > n) cls = 'done';
+  return `<div class="wz-step ${cls}"><div class="wz-num">${n}</div><div><div class="wz-lbl">${title}</div><div class="wz-desc">${desc}</div></div></div>`;
+}
+
+function q3RenderStep(){
+  const m = $('#q3Main');
+  if (Q3.state.step === 1) {
+    m.innerHTML = `
+      <div class="card">
+        <div class="card-head"><h3>Confirm Account</h3><span class="pill pill-gray">step 1 of 3</span></div>
+        <div class="card-body">
+          <p class="muted smaller" style="margin:0 0 16px 0;">You've been locked out of account <strong class="mono">${Q3.account}</strong>. Open a recovery session to continue.</p>
+          <div class="profile-grid" style="max-width:520px;">
+            <div><div class="pk">Account holder</div><div class="pv">M. Okonkwo</div></div>
+            <div><div class="pk">Account type</div><div class="pv">Savings · Tier II</div></div>
+            <div><div class="pk">Last activity</div><div class="pv">Mar 29, 2026</div></div>
+            <div><div class="pk">Lock reason</div><div class="pv">Inactivity timeout</div></div>
+          </div>
+          <div class="mt-20">
+            <button id="q3Begin" class="btn btn-accent">Begin Recovery</button>
+          </div>
         </div>
       </div>
     `;
+    $('#q3Begin').addEventListener('click', q3BeginRecovery);
+  } else if (Q3.state.step === 2) {
+    m.innerHTML = `
+      <div class="card mb-16">
+        <div class="card-head"><h3>Verify PIN</h3><span class="pill pill-gray">step 2 of 3</span></div>
+        <div class="card-body">
+          <p class="muted smaller" style="margin:0 0 10px 0;">Enter the 4-digit PIN associated with this account.</p>
+          <div class="flex gap-8 items-center">
+            <input id="q3Pin" class="input mono" style="max-width:140px; font-size:18px; letter-spacing:6px; text-align:center;" maxlength="4" inputmode="numeric" placeholder="0000" />
+            <button id="q3Verify" class="btn btn-accent">Verify</button>
+          </div>
+
+          <div class="mt-16">
+            <span class="advanced-toggle" id="q3AdvToggle" style="color:var(--text-2);">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="q3AdvCaret"><polyline points="6 9 12 15 18 9"/></svg>
+              Advanced request options
+            </span>
+            <div id="q3AdvBody" class="hide mt-12" style="padding:14px; background:var(--bg-muted); border-radius:8px;">
+              <div class="label">Request Headers</div>
+              <div id="q3HeaderList">
+                <div class="header-editor"><input class="hk" readonly value="Authorization" /><input class="hv" readonly value="Bearer pb_guest_temp" style="opacity:0.7;" /><div></div></div>
+                <div class="header-editor"><input class="hk" readonly value="Content-Type" /><input class="hv" readonly value="application/json" style="opacity:0.7;" /><div></div></div>
+              </div>
+              <div class="flex gap-8 items-center mt-12">
+                <input id="q3NewHK" class="input mono" placeholder="header name (e.g. X-Forwarded-For)" style="max-width:280px;" />
+                <input id="q3NewHV" class="input mono" placeholder="value" style="max-width:200px;" />
+                <button id="q3AddHeader" class="btn btn-outline">Add</button>
+              </div>
+              <div class="muted smaller mt-8">Custom headers are forwarded to the recovery service. Edge proxy respects <span class="kbd">X-Forwarded-For</span>/<span class="kbd">X-Real-IP</span> when the originating network is trusted.</div>
+            </div>
+          </div>
+
+          <div id="q3PinResp" class="mt-16"></div>
+        </div>
+      </div>
+    `;
+    $('#q3Verify').addEventListener('click', q3VerifyPin);
+    $('#q3Pin').addEventListener('keydown', e => { if (e.key === 'Enter') q3VerifyPin(); });
+    $('#q3AdvToggle').addEventListener('click', () => {
+      const w = $('#q3AdvBody'); const c = $('#q3AdvCaret');
+      if (w.classList.contains('hide')) { w.classList.remove('hide'); c.style.transform = 'rotate(180deg)'; }
+      else { w.classList.add('hide'); c.style.transform = ''; }
+    });
+    $('#q3AddHeader').addEventListener('click', q3AddHeader);
+  } else if (Q3.state.step === 3) {
+    m.innerHTML = `
+      <div class="card">
+        <div class="card-head"><h3>Unlock Account</h3><span class="pill pill-gray">step 3 of 3</span></div>
+        <div class="card-body">
+          <p class="muted smaller" style="margin:0 0 14px 0;">Redeem the recovery token issued in the previous step. The unlock endpoint returns the recovery document for this account.</p>
+          <label class="label">Recovery session token</label>
+          <div class="flex gap-8">
+            <input id="q3Tok" class="input mono grow" value="${esc(Q3.state.recoveryToken || '')}" spellcheck="false" />
+            <button id="q3Unlock" class="btn btn-accent">Unlock</button>
+          </div>
+          <div class="muted smaller mt-8">Request sent as <span class="mono">POST /api/v1/recovery/unlock</span> with body <span class="mono">{ recovery_session_token: "…" }</span>.</div>
+          <div id="q3UnlockResp" class="mt-16"></div>
+        </div>
+      </div>
+    `;
+    $('#q3Unlock').addEventListener('click', q3DoUnlock);
+    $('#q3Tok').addEventListener('keydown', e => { if (e.key === 'Enter') q3DoUnlock(); });
   }
 
-  btn.disabled = false;
+  // re-render steps sidebar
+  const steps = $('#q3Steps');
+  if (steps) steps.innerHTML = [1,2,3].map(n => {
+    const titles = ['Confirm account','Verify PIN','Unlock account'];
+    const descs = ['Verify the account identifier to open a recovery session.','Enter the four-digit account PIN to prove ownership.','Redeem the recovery token to pull the account recovery document.'];
+    return q3Step(n, titles[n-1], descs[n-1]);
+  }).join('');
 }
 
-function q3Append(cls, text) {
-  const log = $('#pbLog');
-  if (log.querySelector('.pb-log-empty')) log.innerHTML = '';
-  const row = document.createElement('div');
-  row.className = 'pb-log-entry ' + cls;
-  const time = new Date().toISOString().slice(11, 19);
-  row.textContent = `[${time}] ${text}`;
-  log.appendChild(row);
-  log.scrollTop = log.scrollHeight;
-}
-
-/* ==================================================================== */
-/*                 LAB 4 — OrbitCMS Function Level Auth                 */
-/* ==================================================================== */
-
-function renderQ4() {
-  $('#app').innerHTML = `
-    ${breadcrumb('Function Level Authorization')}
-    <div class="oc-wrap">
-      <div class="oc-header">
-        <div class="oc-logo">
-          <span class="oc-logo-mark">O</span>
-          <span>OrbitCMS</span>
-          <span style="color:rgba(245,242,225,0.35); font-weight:400; font-size:13px; margin-left:6px;">API Reference · v1</span>
-        </div>
-        <div class="oc-tag">Authenticated as <span style="color:#6ee7b7; font-family:'JetBrains Mono',monospace;">editor@orbitcms.io</span> · Role: editor</div>
-      </div>
-
-      <div class="oc-layout">
-        <aside class="oc-sidebar">
-          <h4>Documentation</h4>
-          <div class="oc-nav-group">
-            <div class="oc-nav-title">📄 Content</div>
-            <div class="oc-nav-item"><span class="vb get">GET</span><span>/content</span></div>
-            <div class="oc-nav-item"><span class="vb get">GET</span><span>/content/{id}</span></div>
-            <div class="oc-nav-item"><span class="vb post">POST</span><span>/content</span></div>
-          </div>
-          <div class="oc-nav-group">
-            <div class="oc-nav-title">🖼 Media</div>
-            <div class="oc-nav-item"><span class="vb get">GET</span><span>/media</span></div>
-          </div>
-          <div class="oc-nav-group">
-            <div class="oc-nav-title">👤 Users</div>
-            <div class="oc-nav-item"><span class="vb get">GET</span><span>/users/me</span></div>
-          </div>
-          <div class="oc-nav-group">
-            <div class="oc-nav-title">📰 Publishing</div>
-            <div class="oc-nav-item"><span class="vb post">POST</span><span>/content/{id}/publish</span></div>
-          </div>
-        </aside>
-
-        <div class="oc-main">
-          <div class="oc-panel">
-            <div class="oc-panel-head">
-              <div>
-                <h3>Users · Self-Service</h3>
-                <div class="sub">Return the authenticated user's profile.</div>
-              </div>
-              <div class="oc-ep-pill"><span class="vb get">GET</span><span class="path">/api/v1/users/me</span></div>
-            </div>
-            <div class="oc-panel-body">
-              <div class="oc-desc">Returns the full profile for the user owning the current JWT. Includes role, permissions summary, and any client-discoverable resource links.</div>
-              <button class="oc-try-btn" data-url="/api/v1/users/me">Load /users/me ↓</button>
-              <div id="ocSample1" style="margin-top:14px;"></div>
-            </div>
-          </div>
-
-          <div class="oc-panel">
-            <div class="oc-panel-head">
-              <div>
-                <h3>Content · Public Articles</h3>
-                <div class="sub">List published articles.</div>
-              </div>
-              <div class="oc-ep-pill"><span class="vb get">GET</span><span class="path">/api/v1/content</span></div>
-            </div>
-            <div class="oc-panel-body">
-              <div class="oc-desc">Returns an array of published articles visible to any authenticated user.</div>
-              <button class="oc-try-btn" data-url="/api/v1/content">Load /content ↓</button>
-              <div id="ocSample2" style="margin-top:14px;"></div>
-            </div>
-          </div>
-
-          <div class="oc-panel">
-            <div class="oc-panel-head">
-              <div>
-                <h3>Media · Library</h3>
-                <div class="sub">List uploaded media assets.</div>
-              </div>
-              <div class="oc-ep-pill"><span class="vb get">GET</span><span class="path">/api/v1/media</span></div>
-            </div>
-            <div class="oc-panel-body">
-              <div class="oc-desc">Returns media uploaded by or visible to the current user.</div>
-              <button class="oc-try-btn" data-url="/api/v1/media">Load /media ↓</button>
-              <div id="ocSample3" style="margin-top:14px;"></div>
-            </div>
-          </div>
-
-          <div class="oc-tryit">
-            <h3>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#6ee7b7;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-              Try It — Custom Request
-            </h3>
-            <div class="sub">Send any request to the API with your editor JWT. Useful for testing endpoints documented elsewhere.</div>
-            <div class="oc-url-row">
-              <select id="ocMethod" class="oc-method-sel">
-                <option>GET</option>
-                <option>POST</option>
-              </select>
-              <input id="ocUrl" class="oc-url-in" value="/api/v1/content" spellcheck="false" />
-            </div>
-            <div class="oc-jwt"><span class="lbl">Bearer:</span>eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlZGl0b3ItNDIiLCJyb2xlIjoiZWRpdG9yIn0.AH3sL-signed</div>
-            <button id="ocSend" class="oc-send">Send Request</button>
-            <div id="ocResp" style="margin-top:14px;"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.querySelectorAll('.oc-try-btn').forEach(b => {
-    b.addEventListener('click', async () => {
-      const url = b.dataset.url;
-      $('#ocUrl').value = url;
-      $('#ocMethod').value = 'GET';
-      await q4Send();
-    });
-  });
-  $('#ocSend').addEventListener('click', q4Send);
-  $('#ocUrl').addEventListener('keydown', e => { if (e.key === 'Enter') q4Send(); });
-}
-
-async function q4Send() {
-  const btn = $('#ocSend');
-  const resp = $('#ocResp');
-  const url = $('#ocUrl').value.trim();
-  const method = $('#ocMethod').value;
+async function q3BeginRecovery(){
+  const btn = $('#q3Begin');
   btn.disabled = true;
-  resp.innerHTML = `<div style="color:rgba(245,242,225,0.5); font-size:13px; padding:12px 0;">Sending…</div>`;
+  logPush('q3Log', { tag:'POST', tagCls:'req', html:'<span style="color:#93c5fd;">/api/v1/recovery/init</span>' });
+  const t0 = performance.now();
+  await sleep(220 + Math.random()*120);
+  const dt = Math.round(performance.now() - t0);
+  Q3.state.initSession = 'rec_' + Math.random().toString(36).slice(2,11);
+  logPush('q3Log', [
+    { tag:'200', tagCls:'res-ok', cls:'ok', text:`recovery session opened (${dt}ms) session_id=${Q3.state.initSession}` },
+    { tag:'next', tagCls:'note', cls:'muted', text:'pin verification required · endpoint=/api/v1/recovery/verify-pin' }
+  ]);
+  Q3.state.step = 2;
+  q3RenderStep();
+}
+
+function q3ReadCustomHeaders(){
+  const headers = {};
+  $$('#q3HeaderList .header-editor').forEach(row => {
+    const k = row.querySelector('.hk').value.trim();
+    const v = row.querySelector('.hv').value.trim();
+    if (k && v) headers[k.toLowerCase()] = v;
+  });
+  return headers;
+}
+
+function q3AddHeader(){
+  const kEl = $('#q3NewHK'); const vEl = $('#q3NewHV');
+  const k = kEl.value.trim(); const v = vEl.value.trim();
+  if (!k || !v) return;
+  const list = $('#q3HeaderList');
+  const row = document.createElement('div');
+  row.className = 'header-editor';
+  row.innerHTML = `<input class="hk" value="${esc(k)}" /><input class="hv" value="${esc(v)}" /><button class="btn btn-ghost del" title="Remove">✕</button>`;
+  row.querySelector('.del').addEventListener('click', () => row.remove());
+  list.appendChild(row);
+  kEl.value = ''; vEl.value = '';
+}
+
+async function q3VerifyPin(){
+  const pin = ($('#q3Pin').value || '').trim();
+  if (!/^\d{4}$/.test(pin)) {
+    $('#q3PinResp').innerHTML = statusRow(400,'Bad Request') + `<pre class="response-json">${syntaxJSON({error:'pin_format', message:'PIN must be four digits.'})}</pre>`;
+    return;
+  }
+  const btn = $('#q3Verify'); btn.disabled = true;
+  const headers = q3ReadCustomHeaders();
+  // determine rate-limit bucket
+  let bucket = 'direct:198.51.100.42'; // simulated real IP
+  let trustApplied = null;
+  for (const h of Q3.trustedHeaders) {
+    if (headers[h]) { bucket = 'ip:' + headers[h].split(',')[0].trim(); trustApplied = h; break; }
+  }
+  Q3.state.ipCounters[bucket] = (Q3.state.ipCounters[bucket] || 0) + 1;
+  Q3.state.attempts++;
+  $('#q3StatAttempts').textContent = Q3.state.attempts;
+
+  logPush('q3Log', [
+    { tag:'POST', tagCls:'req', html:`<span style="color:#93c5fd;">/api/v1/recovery/verify-pin</span>  body=${JSON.stringify({pin})}` },
+    { tag:'rl', tagCls:'note', cls:'muted', text:`ratelimit: bucket=${bucket} count=${Q3.state.ipCounters[bucket]}/5${trustApplied?`  (trusted header ${trustApplied} honored)`:''}` }
+  ]);
 
   const t0 = performance.now();
-  await sleep(170 + Math.random() * 130);
+  await sleep(180 + Math.random()*120);
   const dt = Math.round(performance.now() - t0);
 
-  const { status, statusText, body, isFlag } = q4Handle(method, url);
-
-  const cls = status === 200 ? 's200' : (status === 201 ? 's201' : (status === 403 ? 's403' : (status === 404 ? 's404' : 's401')));
-  let html = `
-    <div class="status-row ${cls}">
-      <strong>${status}</strong><span style="opacity:0.7;">${statusText} · ${dt}ms · ${new Blob([JSON.stringify(body)]).size}B</span>
-    </div>
-    <pre class="response-json">${syntaxJSON(body)}</pre>
-  `;
-  if (isFlag) {
-    html += flagBlock('Admin endpoint called with editor credentials. Function-level authorization was not enforced.', dec(_F.q4));
+  if (Q3.state.ipCounters[bucket] > 5) {
+    $('#q3StatRate').textContent = 'blocked'; $('#q3StatRate').style.color = '#b91c1c';
+    const body = { error:'rate_limited', bucket, retry_after_seconds: 60 };
+    $('#q3PinResp').innerHTML = statusRow(429,'Too Many Requests',`${dt}ms`) + `<pre class="response-json">${syntaxJSON(body)}</pre>`;
+    logPush('q3Log', { tag:'429', tagCls:'res-err', cls:'err', text:`bucket exhausted: ${bucket}` });
+    btn.disabled = false; return;
   }
-  resp.innerHTML = html;
+
+  $('#q3StatRate').textContent = 'ready'; $('#q3StatRate').style.color = '#047857';
+  if (pin === Q3.pin) {
+    const token = 'rst_' + Math.random().toString(36).slice(2,18);
+    Q3.state.recoveryToken = token;
+    Q3.state.tokensIssued += 1;
+    $('#q3StatTokens').textContent = Q3.state.tokensIssued;
+    const body = { verified:true, account:Q3.account, recovery_session_token: token, expires_in: 300 };
+    let html = statusRow(200,'OK',`${dt}ms`) + `<pre class="response-json">${syntaxJSON(body)}</pre>`;
+    html += `<div class="mt-12 flex gap-8 items-center"><button id="q3Proceed" class="btn btn-primary">Proceed to unlock →</button><span class="muted smaller">Token has been copied into step 3.</span></div>`;
+    $('#q3PinResp').innerHTML = html;
+    $('#q3Proceed').addEventListener('click', () => { Q3.state.step = 3; q3RenderStep(); });
+    logPush('q3Log', [
+      { tag:'200', tagCls:'res-ok', cls:'ok', text:`pin accepted (${dt}ms)` },
+      { tag:'issue', tagCls:'note', cls:'info', text:`recovery_session_token issued → use on /api/v1/recovery/unlock` }
+    ]);
+  } else {
+    const body = { verified:false, error:'invalid_pin', attempts_remaining_in_bucket: Math.max(0, 5 - Q3.state.ipCounters[bucket]) };
+    $('#q3PinResp').innerHTML = statusRow(401,'Unauthorized',`${dt}ms`) + `<pre class="response-json">${syntaxJSON(body)}</pre>`;
+    logPush('q3Log', { tag:'401', tagCls:'res-warn', cls:'warn', text:`pin rejected · remaining_in_bucket=${body.attempts_remaining_in_bucket}` });
+  }
   btn.disabled = false;
 }
 
-function q4Handle(method, url) {
-  const u = url.replace(/\/+$/, '');
-  if (method === 'GET' && u === '/api/v1/users/me') {
-    return { status: 200, statusText: 'OK', body: {
-      user_id: 'editor-42',
-      email: 'editor@orbitcms.io',
-      name: 'Sam Rivera',
-      role: 'editor',
-      permissions: ['content:read','content:write','media:read'],
-      created_at: '2024-09-11T10:22:00Z',
-      _links: {
-        self: '/api/v1/users/me',
-        content: '/api/v1/content',
-        admin_panel: '/api/v1/admin/users'
-      }
-    }, isFlag: false };
+async function q3DoUnlock(){
+  const tok = ($('#q3Tok').value || '').trim();
+  const btn = $('#q3Unlock'); btn.disabled = true;
+  const out = $('#q3UnlockResp');
+  out.innerHTML = `<div class="muted smaller" style="padding:10px 0;">Redeeming…</div>`;
+  logPush('q3Log', { tag:'POST', tagCls:'req', html:`<span style="color:#93c5fd;">/api/v1/recovery/unlock</span>  body={ recovery_session_token: &quot;${esc(tok)}&quot; }` });
+  const t0 = performance.now();
+  await sleep(220 + Math.random()*120);
+  const dt = Math.round(performance.now() - t0);
+
+  if (!tok || tok !== Q3.state.recoveryToken) {
+    out.innerHTML = statusRow(401,'Unauthorized',`${dt}ms`) + `<pre class="response-json">${syntaxJSON({error:'invalid_or_expired_token'})}</pre>`;
+    logPush('q3Log', { tag:'401', tagCls:'res-warn', cls:'warn', text:'token not recognized' });
+    btn.disabled = false; return;
   }
-  if (method === 'GET' && u === '/api/v1/content') {
-    return { status: 200, statusText: 'OK', body: {
-      data: [
-        { id: 'art_01', title: 'Launching Orbit 4.2', author: 'editor-07', status: 'published', published_at: '2026-04-01T09:00:00Z' },
-        { id: 'art_02', title: 'Release Notes: Media API', author: 'editor-42', status: 'published', published_at: '2026-03-28T09:00:00Z' },
-        { id: 'art_03', title: 'Internal: Style Guide v3', author: 'editor-14', status: 'published', published_at: '2026-03-10T09:00:00Z' }
-      ],
-      total: 3, page: 1
-    }, isFlag: false };
-  }
-  const mArt = u.match(/^\/api\/v1\/content\/([\w]+)$/);
-  if (method === 'GET' && mArt) {
-    return { status: 200, statusText: 'OK', body: {
-      id: mArt[1], title: 'Sample Article', author: 'editor-42', status: 'published',
-      body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit…'
-    }, isFlag: false };
-  }
-  if (method === 'POST' && u === '/api/v1/content') {
-    return { status: 201, statusText: 'Created', body: {
-      id: 'art_' + Math.random().toString(36).slice(2,8), status: 'draft', author: 'editor-42', created_at: new Date().toISOString()
-    }, isFlag: false };
-  }
-  if (method === 'GET' && u === '/api/v1/media') {
-    return { status: 200, statusText: 'OK', body: {
-      data: [
-        { id: 'med_a1', filename: 'hero.png', size: 184231, uploaded_by: 'editor-42' },
-        { id: 'med_a2', filename: 'team.jpg', size: 421005, uploaded_by: 'editor-07' }
-      ]
-    }, isFlag: false };
-  }
-  if (method === 'GET' && u === '/api/v1/admin/users') {
-    return { status: 200, statusText: 'OK', body: {
-      data: [
-        { user_id: 'admin-01', email: 'root@orbitcms.io', name: 'Platform Admin', role: 'admin', mfa: true, recovery_token: dec(_S.q4Token) },
-        { user_id: 'admin-02', email: 'billing@orbitcms.io', name: 'Billing Admin', role: 'admin', mfa: true },
-        { user_id: 'editor-07', email: 'alex@orbitcms.io', name: 'Alex Quinn', role: 'editor', mfa: false },
-        { user_id: 'editor-42', email: 'editor@orbitcms.io', name: 'Sam Rivera', role: 'editor', mfa: false },
-        { user_id: 'editor-14', email: 'jules@orbitcms.io', name: 'Jules Park', role: 'editor', mfa: true },
-        { user_id: 'viewer-23', email: 'read@orbitcms.io', name: 'Read-Only Bot', role: 'viewer', mfa: false }
-      ],
-      total: 6
-    }, isFlag: true };
-  }
-  if (u.startsWith('/api/v1/admin/')) {
-    return { status: 200, statusText: 'OK', body: { data: [], note: 'endpoint reachable but empty' }, isFlag: false };
-  }
-  return { status: 404, statusText: 'Not Found', body: { error: 'route_not_found', path: url } };
+
+  Q3.state.solved = true;
+  const body = {
+    status:'unlocked',
+    account: Q3.account,
+    recovery_document:{
+      holder:'M. Okonkwo',
+      issued_at: new Date().toISOString(),
+      auth_backup_phrase: dec(_F.q3),
+      notice:'Store this phrase. It is required to authorize the next reset.'
+    }
+  };
+  let html = statusRow(200,'OK',`${dt}ms`) + `<pre class="response-json">${syntaxJSON(body)}</pre>`;
+  html += flagBlock('The rate limiter trusted the forwarded IP on every verify; a brute-forced PIN produced a session token, and that token unlocked the recovery document.', dec(_F.q3));
+  out.innerHTML = html;
+  logPush('q3Log', [
+    { tag:'200', tagCls:'res-ok', cls:'ok', text:`unlock granted (${dt}ms)` },
+    { tag:'done', tagCls:'note', cls:'info', text:'recovery document returned · lab objective complete' }
+  ]);
+  btn.disabled = false;
+}
+/* ==================================================================== */
+/*                         LAB 4 — OrbitCMS                             */
+/* ==================================================================== */
+const Q4 = {
+  state:{ section:'dashboard', auditSession:null, solved:false },
+  auditSession:'aud_92cf_adm01_orbit',
+  me:{ user_id:'usr_e42', email:'sam.rivera@orbitcms.io', name:'Sam Rivera', role:'editor' }
+};
+
+function renderQ4(){
+  Q4.state = { section:'dashboard', auditSession:null, solved:false };
+  $('#app').innerHTML = `
+    ${breadcrumb('Publishing Workspace')}
+    <div class="lab-wrap q4-accent">
+      <div class="lab-header">
+        <div class="lab-brand">
+          <div class="mark" style="background:linear-gradient(135deg,#047857,#10b981);">O</div>
+          <div>
+            <div class="name">OrbitCMS</div>
+            <div class="env">Signed in as <strong>${Q4.me.name}</strong> · ${Q4.me.email} · role=editor</div>
+          </div>
+        </div>
+        <div class="pill pill-green" style="align-self:center;">JWT · ey…editor-42</div>
+      </div>
+
+      <div class="q4-shell">
+        <aside class="q4-nav" id="q4Nav">
+          <h4>Workspace</h4>
+          ${q4NavSection('dashboard','Dashboard')}
+          <div class="q4-group">
+            <div class="q4-group-title">📄 Content</div>
+            <div class="q4-nav-item" data-section="content-list"><span class="method-badge mb-get">GET</span>/content</div>
+            <div class="q4-nav-item" data-section="content-create"><span class="method-badge mb-post">POST</span>/content</div>
+          </div>
+          <div class="q4-group">
+            <div class="q4-group-title">🖼 Media</div>
+            <div class="q4-nav-item" data-section="media-list"><span class="method-badge mb-get">GET</span>/media</div>
+          </div>
+          <div class="q4-group">
+            <div class="q4-group-title">👤 Users</div>
+            <div class="q4-nav-item" data-section="users-me"><span class="method-badge mb-get">GET</span>/users/me</div>
+          </div>
+          <div class="q4-group">
+            <div class="q4-group-title">🛠 Developer</div>
+            <div class="q4-nav-item" data-section="console">Request Console</div>
+          </div>
+        </aside>
+        <div>
+          <div id="q4Main"></div>
+          <div style="margin-top:18px;">
+            ${makeLog('q4Log','orbit-gateway-v1')}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  $$('#q4Nav .q4-nav-item').forEach(el => el.addEventListener('click', () => q4SetSection(el.dataset.section)));
+  q4SetSection('dashboard');
+  logPush('q4Log', [
+    { tag:'note', tagCls:'note', text:'workspace loaded · role=editor · jwt.sub=editor-42' },
+    { tag:'note', tagCls:'note', text:'documented routes: /content, /content/{id}, /media, /users/me' }
+  ]);
 }
 
-/* ---------- boot ---------- */
+function q4NavSection(id,label){
+  return `<div class="q4-nav-item" data-section="${id}" style="padding-left:8px;">${label}</div>`;
+}
+
+function q4SetSection(id){
+  Q4.state.section = id;
+  $$('#q4Nav .q4-nav-item').forEach(el => el.classList.toggle('active', el.dataset.section === id));
+  const m = $('#q4Main');
+  if (id === 'dashboard') m.innerHTML = q4Dashboard();
+  else if (id === 'content-list') { m.innerHTML = q4EndpointCard('GET','/api/v1/content','List published articles','List the articles visible to the current workspace. Returns an array with pagination.'); q4BindTry(); }
+  else if (id === 'content-create') { m.innerHTML = q4EndpointCard('POST','/api/v1/content','Create a draft article','Create a new content draft owned by the caller.'); q4BindTry(); }
+  else if (id === 'media-list') { m.innerHTML = q4EndpointCard('GET','/api/v1/media','List uploaded media','Return media assets accessible to the current user.'); q4BindTry(); }
+  else if (id === 'users-me') { m.innerHTML = q4EndpointCard('GET','/api/v1/users/me','Return current user profile','Returns the authenticated user\'s profile. Includes permissions and discoverable resource links.'); q4BindTry(); }
+  else if (id === 'console') { m.innerHTML = q4Console(); q4BindConsole(); }
+}
+
+function q4Dashboard(){
+  return `
+    <div class="card">
+      <div class="card-head"><h3>Publishing Workspace</h3><span class="pill pill-green">editor</span></div>
+      <div class="card-body">
+        <p class="muted smaller" style="margin:0 0 14px 0; line-height:1.6;">Manage content and media for your workspace. Use the left panel to browse documented endpoints or open the Request Console to send custom calls with your JWT.</p>
+        <div class="profile-grid">
+          <div><div class="pk">Workspace</div><div class="pv">OrbitCMS · main</div></div>
+          <div><div class="pk">Published articles</div><div class="pv">3</div></div>
+          <div><div class="pk">Drafts</div><div class="pv">0</div></div>
+          <div><div class="pk">Media assets</div><div class="pv">2</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card mt-16">
+      <div class="card-head"><h3>Quick actions</h3></div>
+      <div class="card-body" style="padding:0;">
+        ${[
+          { l:'View your user profile', p:'/api/v1/users/me', s:'users-me' },
+          { l:'Browse published content', p:'/api/v1/content', s:'content-list' },
+          { l:'Open the request console', p:'custom requests', s:'console' }
+        ].map(x => `<div style="padding:14px 18px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; font-size:13.5px;">
+          <div><div>${x.l}</div><div class="muted smaller mono">${esc(x.p)}</div></div>
+          <button class="btn btn-outline" data-go="${x.s}">Open</button>
+        </div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function q4EndpointCard(method, path, title, desc){
+  const meth = method.toLowerCase();
+  return `
+    <div class="card">
+      <div class="endpoint-header" style="margin:0; border-radius:0; border-bottom:1px solid var(--border);">
+        <span class="method-badge mb-${meth}">${method}</span>
+        <span class="mono">${esc(path)}</span>
+      </div>
+      <div class="card-body">
+        <h3 style="margin:0 0 4px 0;">${esc(title)}</h3>
+        <div class="muted smaller" style="margin:0 0 14px 0;">${esc(desc)}</div>
+        ${method === 'POST' ? `
+          <label class="label">Request body</label>
+          <textarea id="q4Body" class="textarea mono" style="height:110px;" spellcheck="false">${esc(JSON.stringify({ title:'My new article', body:'…' }, null, 2))}</textarea>
+        ` : ''}
+        <div class="mt-12 flex gap-8">
+          <button id="q4TryBtn" class="btn btn-accent" data-method="${method}" data-path="${esc(path)}">Send Request</button>
+          <button id="q4TryInConsole" class="btn btn-outline" data-method="${method}" data-path="${esc(path)}">Open in Console</button>
+        </div>
+        <div id="q4TryResp" class="mt-16"></div>
+      </div>
+    </div>
+  `;
+}
+
+function q4BindTry(){
+  $$('#q4Main [data-go]').forEach(b => b.addEventListener('click', () => q4SetSection(b.dataset.go)));
+  const btn = $('#q4TryBtn');
+  if (btn) btn.addEventListener('click', async () => {
+    const body = $('#q4Body') ? $('#q4Body').value : null;
+    const result = await q4Dispatch(btn.dataset.method, btn.dataset.path, body);
+    $('#q4TryResp').innerHTML = q4RenderResponse(result);
+  });
+  const openConsole = $('#q4TryInConsole');
+  if (openConsole) openConsole.addEventListener('click', () => {
+    q4SetSection('console');
+    setTimeout(() => {
+      $('#q4CMethod').value = openConsole.dataset.method;
+      $('#q4CUrl').value = openConsole.dataset.path;
+    }, 0);
+  });
+}
+
+function q4Console(){
+  return `
+    <div class="try-panel">
+      <div class="flex items-center gap-8 mb-12">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <h3>Request Console</h3>
+        <span class="pill pill-amber">uses your JWT</span>
+      </div>
+      <p class="muted smaller" style="margin:0 0 14px 0;">Send any request through the OrbitCMS gateway with your editor token. Useful for testing endpoints that aren't linked in the docs yet.</p>
+      <div class="flex gap-8 mb-12">
+        <select id="q4CMethod" class="select" style="max-width:100px;">
+          <option>GET</option><option>POST</option><option>PUT</option><option>DELETE</option>
+        </select>
+        <input id="q4CUrl" class="input mono grow" value="/api/v1/users/me" spellcheck="false" />
+        <button id="q4CSend" class="btn btn-primary">Send</button>
+      </div>
+      <div id="q4CBodyWrap" class="hide">
+        <label class="label">Body</label>
+        <textarea id="q4CBody" class="textarea mono" style="height:110px;" spellcheck="false">{}</textarea>
+      </div>
+      <div id="q4CResp" class="mt-12"></div>
+    </div>
+  `;
+}
+
+function q4BindConsole(){
+  const mSel = $('#q4CMethod');
+  const bw = $('#q4CBodyWrap');
+  const toggleBody = () => { if (mSel.value === 'GET') bw.classList.add('hide'); else bw.classList.remove('hide'); };
+  mSel.addEventListener('change', toggleBody);
+  toggleBody();
+  $('#q4CSend').addEventListener('click', async () => {
+    const m = mSel.value; const p = $('#q4CUrl').value.trim();
+    const body = bw.classList.contains('hide') ? null : $('#q4CBody').value;
+    const result = await q4Dispatch(m, p, body);
+    $('#q4CResp').innerHTML = q4RenderResponse(result);
+  });
+  $('#q4CUrl').addEventListener('keydown', e => { if (e.key === 'Enter') $('#q4CSend').click(); });
+}
+
+function q4RenderResponse(res){
+  let html = statusRow(res.status, res.statusText, `${res.time}ms`) + `<pre class="response-json">${syntaxJSON(res.body)}</pre>`;
+  if (res.flag) html += flagBlock(res.flagMsg, dec(_F.q4));
+  return html;
+}
+
+async function q4Dispatch(method, path, rawBody){
+  logPush('q4Log', { tag:method, tagCls:'req', html:`<span style="color:#93c5fd;">${esc(path)}</span>` });
+  const t0 = performance.now();
+  await sleep(170 + Math.random()*130);
+  const dt = Math.round(performance.now() - t0);
+  const u = path.replace(/\/+$/,'').replace(/^https?:\/\/[^/]+/,'');
+
+  let status = 404, statusText = 'Not Found', body = { error:'route_not_found', path };
+  let flag = false, flagMsg = '';
+
+  if (method === 'GET' && u === '/api/v1/users/me') {
+    status = 200; statusText = 'OK';
+    body = {
+      user_id: Q4.me.user_id, email: Q4.me.email, name: Q4.me.name, role: Q4.me.role,
+      permissions:['content:read','content:write','media:read'],
+      created_at:'2024-09-11T10:22:00Z',
+      _links:{
+        self:'/api/v1/users/me',
+        content:'/api/v1/content',
+        media:'/api/v1/media',
+        admin_panel:'/api/v1/admin/users'
+      }
+    };
+    logPush('q4Log', { tag:'200', tagCls:'res-ok', cls:'ok', text:`profile returned (${dt}ms) · _links include discoverable admin paths` });
+  } else if (method === 'GET' && u === '/api/v1/content') {
+    status = 200; statusText = 'OK';
+    body = { data:[
+      { id:'art_01', title:'Launching Orbit 4.2', author:'editor-07', status:'published', published_at:'2026-04-01T09:00:00Z' },
+      { id:'art_02', title:'Release Notes: Media API', author:'editor-42', status:'published', published_at:'2026-03-28T09:00:00Z' },
+      { id:'art_03', title:'Internal Style Guide v3', author:'editor-14', status:'published', published_at:'2026-03-10T09:00:00Z' }
+    ], total:3 };
+    logPush('q4Log', { tag:'200', tagCls:'res-ok', cls:'ok', text:`3 articles (${dt}ms)` });
+  } else if (method === 'GET' && /^\/api\/v1\/content\/[\w_]+$/.test(u)) {
+    status = 200; statusText = 'OK';
+    body = { id:u.split('/').pop(), title:'Sample Article', author:'editor-42', status:'published', body:'Lorem ipsum dolor sit amet…' };
+    logPush('q4Log', { tag:'200', tagCls:'res-ok', cls:'ok', text:`article (${dt}ms)` });
+  } else if (method === 'POST' && u === '/api/v1/content') {
+    status = 201; statusText = 'Created';
+    let parsed = {};
+    try { parsed = JSON.parse(rawBody || '{}'); } catch {}
+    body = { id:'art_' + Math.random().toString(36).slice(2,8), title: parsed.title || 'Untitled draft', status:'draft', author:Q4.me.user_id, created_at:new Date().toISOString() };
+    logPush('q4Log', { tag:'201', tagCls:'res-ok', cls:'ok', text:`draft created (${dt}ms)` });
+  } else if (method === 'GET' && u === '/api/v1/media') {
+    status = 200; statusText = 'OK';
+    body = { data:[
+      { id:'med_a1', filename:'hero.png', size:184231, uploaded_by:Q4.me.user_id },
+      { id:'med_a2', filename:'team.jpg', size:421005, uploaded_by:'editor-07' }
+    ], total:2 };
+    logPush('q4Log', { tag:'200', tagCls:'res-ok', cls:'ok', text:`2 media assets (${dt}ms)` });
+  } else if (method === 'GET' && u === '/api/v1/admin/users') {
+    status = 200; statusText = 'OK';
+    body = { data:[
+      { user_id:'admin-01', email:'root@orbitcms.io', name:'Platform Admin', role:'admin', mfa:true, last_login:'2026-04-22T08:10:00Z', audit_session: Q4.auditSession },
+      { user_id:'admin-02', email:'billing@orbitcms.io', name:'Billing Admin', role:'admin', mfa:true, last_login:'2026-04-21T17:44:00Z', audit_session:'aud_31aa_adm02_orbit' },
+      { user_id:'editor-07', email:'alex@orbitcms.io', name:'Alex Quinn', role:'editor', mfa:false, audit_session:'aud_77fe_edt07' },
+      { user_id:'editor-42', email:'sam.rivera@orbitcms.io', name:'Sam Rivera', role:'editor', mfa:false, audit_session:'aud_ab12_edt42' },
+      { user_id:'editor-14', email:'jules@orbitcms.io', name:'Jules Park', role:'editor', mfa:true, audit_session:'aud_22bf_edt14' },
+      { user_id:'viewer-23', email:'read@orbitcms.io', name:'Read-Only Bot', role:'viewer', mfa:false, audit_session:'aud_90cc_vwr23' }
+    ], total:6, _links:{ session_lookup:'/api/v1/admin/sessions/{audit_session}' } };
+    logPush('q4Log', [
+      { tag:'200', tagCls:'res-ok', cls:'ok', text:`admin user list returned (${dt}ms)` },
+      { tag:'authz', tagCls:'note', cls:'warn', text:'route=/api/v1/admin/users · expected role=admin · caller role=editor  ↯ function-level check absent' }
+    ]);
+  } else if (method === 'GET' && /^\/api\/v1\/admin\/sessions\/[\w]+$/.test(u)) {
+    const sid = u.split('/').pop();
+    status = 200; statusText = 'OK';
+    if (sid === Q4.auditSession) {
+      Q4.state.solved = true;
+      body = {
+        session_id: sid,
+        subject:'admin-01',
+        issued_at:'2026-04-22T07:41:00Z',
+        audit_notes:['mfa_challenge_ok','ip_match=10.2.0.14'],
+        emergency_access_phrase: dec(_F.q4),
+        notice:'Store this phrase. Required for break-glass administrative actions.'
+      };
+      flag = true;
+      flagMsg = 'An undocumented admin list exposed the privileged audit session identifier; the session detail endpoint released the emergency access phrase.';
+      logPush('q4Log', [
+        { tag:'200', tagCls:'res-ok', cls:'ok', text:`session detail returned (${dt}ms)` },
+        { tag:'authz', tagCls:'note', cls:'warn', text:'admin sessions endpoint served with editor JWT' }
+      ]);
+    } else {
+      body = { session_id: sid, subject:'[redacted]', audit_notes:[], notice:'Session detail requires a session identifier tied to an administrator account.' };
+      logPush('q4Log', { tag:'200', tagCls:'res-ok', cls:'muted', text:`session (${dt}ms) · no privileged payload for this session` });
+    }
+  } else if (/^\/api\/v1\/admin\//.test(u) && method === 'GET') {
+    status = 200; statusText = 'OK';
+    body = { data:[], note:'endpoint reachable but empty' };
+    logPush('q4Log', { tag:'200', tagCls:'res-ok', cls:'muted', text:`admin route returned empty (${dt}ms)` });
+  } else {
+    logPush('q4Log', { tag:'404', tagCls:'res-err', cls:'err', text:`no handler for ${method} ${path} (${dt}ms)` });
+  }
+
+  return { status, statusText, body, time: dt, flag, flagMsg };
+}
+
 route();
 </script>
 </body>
